@@ -29,12 +29,10 @@ def shamirSecretSharing(secret):
     for i in range(1, n+1):
         share = ShamirGraphicalFunction(i, coefficients, secret)
         pieces.append((i, share))
+    
+    return pieces
 
         
-
-    
-
-
 
 def generateEphemeral(t):
     while True:
@@ -47,7 +45,7 @@ def generateEphemeral(t):
         )
         EphID_int = int.from_bytes(EphID_bytes, byteorder='big')
 
-        shamirSecretSharing(EphID_int)
+        chunks = shamirSecretSharing(EphID_int)
 
         time.sleep(t)
 
