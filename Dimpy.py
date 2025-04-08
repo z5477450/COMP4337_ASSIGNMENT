@@ -5,12 +5,22 @@ from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
 from cryptography.hazmat.primitives import serialization
 import random
 from socket import *
+from decimal import Decimal
+import ast
+from subrosa import split_secret, recover_secret, Share
+
 
 myChunks = []
 
+def reconstructedSecret(shares):
+    secret = recover_secret(shares)
+    return int.from_bytes(secret, byteorder='big')
+
 def listenShares(chunksNeeded):
     global myChunks
-    chunks = []
+    collectedChunks = []
+    prevHash = None
+
 
     nodeSocket = socket(AF_INET, SOCK_DGRAM)
     nodeSocket.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
@@ -18,29 +28,49 @@ def listenShares(chunksNeeded):
 
     while True:
         data, address = nodeSocket.recvfrom(1024)
-        chunk = data.decode('utf-8')
-        
-        if chunk in myChunks:
+        chunk = data.decode('utf-8').split("||")
+
+
+        chunkRecv = eval(chunk[0])
+        hashRecv = eval(chunk[1])
+
+        # Ignoring chunks received from self. 
+        if chunkRecv in myChunks:
             continue
 
         sendProbability = random.random()
+        # if sendProbability < 0.5:
+        #     continue
+        
+        if prevHash is None:
+            prevHash = hashRecv
+        elif prevHash != hashRecv:
+            prevHash = hashRecv
+            collectedChunks = []
 
-        if sendProbability < 0.5:
-            continue
+        collectedChunks.append(chunkRecv)
         
         # Add the chunks received to the chunks array.
-        chunks.append(chunk)
-        print(f"[>>] Received Chunk: {chunk}")
+        print(f"[>] Received Chunk {len(collectedChunks)} out of {chunksNeeded}: {chunkRecv}")
 
-        if len(chunks ==chunksNeeded):
-            k out of n chunks has been received, receiver can now reconstruct the secret.
+        prevHash = hashRecv
+        shares = [Share.from_bytes(share) for share in collectedChunks]
+
+        if len(collectedChunks) == chunksNeeded:
+            shares = [Share.from_bytes(share) for share in collectedChunks]
+            secretRecv = reconstructedSecret(shares)
+
+            if hashRecv == hash(secretRecv):
+                print("Correct secret has been found.")
+
+
 
     
     nodeSocket.close()
 
 
 
-def broadcastShares(chunks):
+def broadcastShares(chunks, ephIDhash):
     length = len(chunks)
 
     # Setup UDP connection
@@ -49,57 +79,35 @@ def broadcastShares(chunks):
 
     for i in range(0, length):
         print(f"[>] Broadcasting: {str(chunks[i])}")
-        nodeSocket.sendto(str(chunks[i]).encode('utf-8'), ("127.0.0.1", 50000))
+
+        message = str(chunks[i]) + "||" 
+        message += str(ephIDhash)
+        nodeSocket.sendto(message.encode('utf-8'), ("127.0.0.1", 50000))
+
         time.sleep(3)
     
     nodeSocket.close()
-    
-
-def ShamirGraphicalFunction(x, coefficients, secret):
-    y = secret
-    degree = len(coefficients) + 1
-    for value in coefficients:
-        y += value * ((x)^degree)
-        degree -= 1
-    return y
-
-def shamirSecretSharing(secret):
-    k = int(sys.argv[2])
-    n = int(sys.argv[3])
-
-    degree = k -1 
-    pieces = []
-    # These are randomly generated coefficients for the shamir f(x) function.
-    coefficients = []
-
-    for i in range(0, degree):
-        coefficients.append(random.randint(1, 100))
-
-
-    for i in range(1, n+1):
-        share = ShamirGraphicalFunction(i, coefficients, secret)
-        pieces.append(str((i, share)))
-    
-    return pieces
-
         
 
-def generateEphemeral(t):
+def generateEphemeral(t, k, n):
     while True:
         global myChunks
 
-        EphID_priv = X25519PrivateKey.generate()
-        EphID = EphID_priv.public_key()
+        ephIDprivKey = X25519PrivateKey.generate()
+        EphID = ephIDprivKey.public_key()
 
-        EphID_bytes = EphID.public_bytes(
+        ephIDBytes = EphID.public_bytes(
             encoding=serialization.Encoding.Raw, 
             format=serialization.PublicFormat.Raw 
         )
-        EphID_int = int.from_bytes(EphID_bytes, byteorder='big')
+        ephIDInt = int.from_bytes(ephIDBytes, byteorder='big')
+        ephIDhash = hash(ephIDInt)
+        print(ephIDInt)
 
-        myChunks = shamirSecretSharing(EphID_int)
-       
-        broadcastShares(myChunks)
+        chunks = split_secret(ephIDBytes, k, n)
+        myChunks = [bytes(chunk) for chunk in chunks]
+
+        broadcastShares(myChunks, ephIDhash)
 
         time.sleep(t)
 
@@ -136,7 +144,7 @@ def main():
     chunkListen = threading.Thread(target=listenShares, args=(k,), daemon=True)  
     chunkListen.start()
 
-    generateEphemeral(t)
+    generateEphemeral(t, k, n)
 
 
     
