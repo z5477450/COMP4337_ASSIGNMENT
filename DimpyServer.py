@@ -5,7 +5,7 @@ if __name__ == '__main__':
     stored_CBF = {}
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
-    serverSocket.bind(('localhost', serverPort))
+    serverSocket.bind(('localhost', port))
 
     # Queue size may need to be increased based on spec. 
     serverSocket.listen(5)
