@@ -12,6 +12,13 @@ from bloom_filter import BloomFilter
 import datetime
 from socket import socket, AF_INET, SOCK_DGRAM
 import copy
+"""
+pip install:
+cryptography
+bloom-filter
+subrosa
+copy
+"""
 
 SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 50000
@@ -329,8 +336,10 @@ def sendCBF(CBF):
 
 
 
-def combineDBFtoCBF(t):
+def combineDBFtoCBF():
+    global allDBFs, CBF, CBFlist
     CBF = BloomFilter(max_elements=10000, error_rate=0.1)
+    CBFlist = []
 
     current_time = datetime.datetime.now()
     print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
@@ -340,15 +349,17 @@ def combineDBFtoCBF(t):
         # retrive the elements in BF instead of modified the original data in DBF
         temp_dbf = copy.deepcopy(DBF)
         CBF |= temp_dbf
+        CBFlist.append(encid_hex)
+        
 
     # After combining, reset the list of DBFs
     allDBFs = []
 
     # Display the current state of the CBF after combining
-    print(f"[>] QBF now contains {len(CBF)} EncIDs.")
+    print(f"[>] QBF now contains {len(CBFlist)} EncIDs.")
 
     print("[>] Current QBF contains the following EncIDs:")
-    for i, encid in enumerate(CBF):
+    for i, encid in enumerate(CBFlist):
         print(f"    {i + 1}. {encid}")
 
     print("[>] Sending CBFs to backend.")
@@ -404,7 +415,7 @@ def main():
     qbf_thread = threading.Thread(target=combineDBFtoQBF, args=(t,), daemon=True)
     qbf_thread.start()
 
-    cbf_thread = threading.Thread(target=combineDBFtoQBF, args=(t,), daemon=True)
+    cbf_thread = threading.Thread(target=combineDBFtoCBF, daemon=True)
     cbf_thread.start()
 
     ephid_thread = threading.Thread(target=generateEphemeral, args=(t, k, n), daemon=True)
