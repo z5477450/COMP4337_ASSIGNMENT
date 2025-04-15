@@ -317,6 +317,18 @@ def combineDBFtoQBF(t):
 """
 task 9
 """
+def sendCBF(CBF):
+    global localNodeID
+
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect(('localhost', 51000))
+
+    clientSocket.send(CBF.encode('utf-8'))
+
+    clientSocket.close()
+
+
+
 def combineDBFtoCBF(t):
     CBF = BloomFilter(max_elements=10000, error_rate=0.1)
 
@@ -339,6 +351,13 @@ def combineDBFtoCBF(t):
     for i, encid in enumerate(CBF):
         print(f"    {i + 1}. {encid}")
 
+    print("[>] Sending CBFs to backend.")
+    sendToBackEnd(CBF)
+
+# Sending CBF to backend.
+def sendToBackEnd(CBF):
+    tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF,), daemon=True)  
+    tcp_sendCBF.start()
 
 
 def main():
