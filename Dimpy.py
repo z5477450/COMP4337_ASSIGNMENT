@@ -39,8 +39,8 @@ def listenShares(chunksNeeded):
             continue
 
         sendProbability = random.random()
-        # if sendProbability < 0.5:
-        #     continue
+        if sendProbability < 0.5:
+            continue
         
         if prevHash is None:
             prevHash = hashRecv
@@ -92,7 +92,6 @@ def broadcastShares(chunks, ephIDhash):
 def generateEphemeral(t, k, n):
     while True:
         global myChunks
-
         ephIDprivKey = X25519PrivateKey.generate()
         EphID = ephIDprivKey.public_key()
 
@@ -102,7 +101,7 @@ def generateEphemeral(t, k, n):
         )
         ephIDInt = int.from_bytes(ephIDBytes, byteorder='big')
         ephIDhash = hash(ephIDInt)
-        print(ephIDInt)
+        print(f"My EPH ID {ephIDInt}")
 
         chunks = split_secret(ephIDBytes, k, n)
         myChunks = [bytes(chunk) for chunk in chunks]
