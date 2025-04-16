@@ -44,7 +44,7 @@ def listenShares(chunksNeeded):
 
 
     nodeSocket = socket(AF_INET, SOCK_DGRAM)
-    nodeSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    nodeSocket.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
     nodeSocket.bind(("", 50000))
 
     while True:
@@ -330,10 +330,12 @@ def sendCBF(CBF):
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
 
+    message = f"{CBF}||{localNodeID}"
     clientSocket.send(CBF.encode('utf-8'))
 
-    clientSocket.close()
+    confirmation = clientSocket.recv(1024)
 
+    clientSocket.close()
 
 
 def combineDBFtoCBF():
@@ -351,14 +353,15 @@ def combineDBFtoCBF():
         CBF |= temp_dbf
         CBFlist.append(encid_hex)
         
+        
 
     # After combining, reset the list of DBFs
     allDBFs = []
 
     # Display the current state of the CBF after combining
-    print(f"[>] QBF now contains {len(CBFlist)} EncIDs.")
+    print(f"[>] CBF now contains {len(CBFlist)} EncIDs.")
 
-    print("[>] Current QBF contains the following EncIDs:")
+    print("[>] Current CBF contains the following EncIDs:")
     for i, encid in enumerate(CBFlist):
         print(f"    {i + 1}. {encid}")
 

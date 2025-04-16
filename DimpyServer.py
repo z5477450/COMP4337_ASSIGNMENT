@@ -15,11 +15,13 @@ if __name__ == '__main__':
         message = connectionSocket.recv(1024)
 
         CBFRecv = message.decode('utf-8').split("||")
-        nodeID = CBFRecv[0]
-        CBF = CBFRecv[1]
+        CBF = CBFRecv[0]
+        nodeID = CBFRecv[1]
+    
 
         stored_CBF[nodeID] = CBF
 
+        connectionSocket.send("UPLOAD SUCCESSFUl")
         connectionSocket.close()
 
 
