@@ -9,6 +9,7 @@ if __name__ == '__main__':
 
     # Queue size may need to be increased based on spec. 
     serverSocket.listen(5)
+    print("Waiting for connection ...")
 
     while 1:
         connectionSocket, address = serverSocket.accept()
@@ -20,7 +21,7 @@ if __name__ == '__main__':
     
 
         stored_CBF[nodeID] = CBF
-
+        print("UPLOAD SUCCESSFUl")
         connectionSocket.send("UPLOAD SUCCESSFUl")
         connectionSocket.close()
 
