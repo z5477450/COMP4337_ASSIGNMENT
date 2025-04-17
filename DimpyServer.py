@@ -1,4 +1,5 @@
 from socket import *
+import pickle
 
 if __name__ == '__main__':
     port = 51000
@@ -14,10 +15,10 @@ if __name__ == '__main__':
     while 1:
         connectionSocket, address = serverSocket.accept()
         message = connectionSocket.recv(1024)
+        deloadPickle = pickle.loads(message)
 
-        CBFRecv = message.decode('utf-8').split("||")
-        CBF = CBFRecv[0]
-        nodeID = CBFRecv[1]
+        CBF = deloadPickle['cbf']
+        nodeID = deloadPickle['node_id']
     
 
         stored_CBF[nodeID] = CBF

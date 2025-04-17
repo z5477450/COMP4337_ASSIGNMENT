@@ -12,6 +12,7 @@ from bloom_filter import BloomFilter
 import datetime
 from socket import socket, AF_INET, SOCK_DGRAM
 import copy
+import pickle
 """
 pip install:
 cryptography
@@ -39,10 +40,17 @@ def reconstructedSecret(shares):
     secret = recover_secret(shares)
     return int.from_bytes(secret, byteorder='big')
 
-def listenShares(chunksNeeded):
+def listenShares(k):
     global myChunks
-    collectedChunks = []
-    prevHash = None
+
+    # Keys: SenderID.
+    # Values: An array of chunks collected from a sender.
+    # Array needs to be reset if a new hash is received from a sender.
+    collectedChunks = {}
+
+    # Keys: SenderID.
+    # Values: The most recent hash received from a sender.
+    prevHash = {}
 
 
     nodeSocket = socket(AF_INET, SOCK_DGRAM)
@@ -57,52 +65,54 @@ def listenShares(chunksNeeded):
         chunkRecv = eval(chunk[0])
         hashRecv = eval(chunk[1])
         senderID = chunk[2].strip()
-        # Ignoring chunks received from self. 
-        if senderID == localNodeID:
-            continue
+        chunksNeeded = int(chunk[3].strip())
+
         # Ignoring chunks received from self. 
         if chunkRecv in myChunks:
             continue
         
-
         sendProbability = random.random()
         # if sendProbability < 0.5:
         #     continue
         
-        if prevHash is None:
-            prevHash = hashRecv
-        elif prevHash != hashRecv:
-            prevHash = hashRecv
-            collectedChunks = []
+        if senderID not in collectedChunks:
+            collectedChunks[senderID] = []
 
-        collectedChunks.append(chunkRecv)
+        if senderID not in prevHash:
+            prevHash[senderID] = hashRecv
+
+        elif prevHash[senderID] != hashRecv:
+            # New hash means they are being received from a new secret.
+            collectedChunks[senderID] = []
+        
+        prevHash[senderID] = hashRecv
+        collectedChunks[senderID].append(chunkRecv)
         
         # Add the chunks received to the chunks array.
-        print(f"[>] Received Chunk {len(collectedChunks)} out of {chunksNeeded}: {chunkRecv}")
+        print(f"[>] Received Chunk {len(collectedChunks[senderID])} out of {chunksNeeded}: {chunkRecv} from client number {senderID}")
 
-        prevHash = hashRecv
-        shares = [Share.from_bytes(share) for share in collectedChunks]
+        shares = [Share.from_bytes(share) for share in collectedChunks[senderID]]
 
-        if len(collectedChunks) == chunksNeeded:
+        if len(collectedChunks[senderID]) == chunksNeeded:
             try:
-                shares = [Share.from_bytes(share) for share in collectedChunks]
+                shares = [Share.from_bytes(share) for share in collectedChunks[senderID]]
                 secretRecv = reconstructedSecret(shares)
                 if hashRecv == hash(secretRecv):
-                    print("Correct secret has been found.")
+                    print(f"Correct secret has been found. EncID will now be made with client number {senderID}")
                     secretRecvBytes = secretRecv.to_bytes((secretRecv.bit_length() + 7) // 8, byteorder='big')
                     handle_diffie_hellman_exchange(ephIDprivKey, secretRecvBytes, senderID)
-                collectedChunks = []
+                collectedChunks[senderID] = []
                 
             except Exception as e:
                 print(f"Error processing chunks: {e}")
-                collectedChunks = []
+                collectedChunks[senderID] = []
 
     
     nodeSocket.close()
 
 
 
-def broadcastShares(chunks, ephIDhash):
+def broadcastShares(chunks, ephIDhash, k):
     length = len(chunks)
 
     # Setup UDP connection
@@ -114,7 +124,8 @@ def broadcastShares(chunks, ephIDhash):
 
         message = str(chunks[i]) + "||" 
         message += str(ephIDhash) + "||"
-        message += localNodeID
+        message += localNodeID + "||"
+        message += str(k)
         nodeSocket.sendto(message.encode('utf-8'), ("255.255.255.255", 50000))
 
         time.sleep(3)
@@ -135,12 +146,13 @@ def generateEphemeral(t, k, n):
         )
         ephIDInt = int.from_bytes(ephIDBytes, byteorder='big')
         ephIDhash = hash(ephIDInt)
-        print(f"EphIDInt: {ephIDInt}")
+        print("=" * 60)
+        print(f"New EphIDInt generated: {ephIDInt}")
 
         chunks = split_secret(ephIDBytes, k, n)
         myChunks = [bytes(chunk) for chunk in chunks]
 
-        broadcastShares(myChunks, ephIDhash)
+        broadcastShares(myChunks, ephIDhash, k)
 
         time.sleep(t)
 
@@ -298,7 +310,12 @@ def combineDBFtoQBF(t):
 
     while True:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
-        
+
+        # Meaning node has covid and no longer generates QBFs.
+        if covid:
+            print("[>>] Covid detected. Terminating QBF generation.")
+            break
+
         if len(allDBFs) == 0:
             continue
 
@@ -328,52 +345,49 @@ task 9
 def sendCBF(CBF):
     global localNodeID
 
-
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
 
-    message = f"{CBF}||{localNodeID}"
-    clientSocket.send(CBF.encode('utf-8'))
-
-    confirmation = clientSocket.recv(1024)
+    # payload = {
+    #     'CBF': CBF,
+    #     'nodeID': localNodeID
+    # }
+    # clientSocket.send(pickle.dumps(payload))
+    # confirmation = clientSocket.recv(1024)
 
     clientSocket.close()
 
 
 def combineDBFtoCBF():
     global allDBFs, CBF, CBFlist
-    while True:
-        CBF = BloomFilter(max_elements=10000, error_rate=0.1)
-        CBFlist = []
 
-        if len(CBFlist) == 0 or not covid:
-            return
+    CBF = BloomFilter(max_elements=10000, error_rate=0.1)
+    CBFlist = []
+
+    
+    current_time = datetime.datetime.now()
+    print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    # Combine all the EncIDs from the stored DBFs into the QBF
+    for timestamp, encid_hex, CBF in allDBFs:
+        # retrive the elements in BF instead of modified the original data in DBF
+        temp_dbf = copy.deepcopy(DBF)
+        CBF |= temp_dbf
+        CBFlist.append(encid_hex)
         
-        current_time = datetime.datetime.now()
-        print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
-
-        # Combine all the EncIDs from the stored DBFs into the QBF
-        for timestamp, encid_hex, CBF in allDBFs:
-            # retrive the elements in BF instead of modified the original data in DBF
-            temp_dbf = copy.deepcopy(DBF)
-            CBF |= temp_dbf
-            CBFlist.append(encid_hex)
-            
 
 
-        # After combining, reset the list of DBFs
-        allDBFs = []
 
-        # Display the current state of the CBF after combining
-        print(f"[>] CBF now contains {len(CBFlist)} EncIDs.")
+    # Display the current state of the CBF after combining
+    print(f"[>] CBF now contains {len(CBFlist)} EncIDs.")
 
-        print("[>] Current CBF contains the following EncIDs:")
-        for i, encid in enumerate(CBFlist):
-            print(f"    {i + 1}. {encid}")
+    print("[>] Current CBF contains the following EncIDs:")
+    for i, encid in enumerate(CBFlist):
+        print(f"    {i + 1}. {encid}")
 
-        print("[>] Sending CBFs to backend.")
-        
-        sendToBackEnd(CBF)
+    print("[>] Sending CBFs to backend.")
+    
+    sendToBackEnd(CBF)
 
 # Sending CBF to backend.
 def sendToBackEnd(CBF):
@@ -415,6 +429,11 @@ def main():
     print(f"DIMY Client starting")
     print(f"Local_Node_ID: {localNodeID}")
     print("=" * 60)
+    print("If covid positive please press [y] at any given time.")
+    print("Do you have covid?")
+    time.sleep(1)
+
+
     dbf_thread = threading.Thread(target=DBF_manager, args=(t,))
     dbf_thread.daemon = True
     dbf_thread.start()
@@ -430,16 +449,12 @@ def main():
 
 
     while True:
-        # MAKE THIS PRETTIER !!!!!!!!!!!!!!
-        # IF YES NO MORE INPUT IS REQUIRED !!!!!!!!
-        time.sleep(5)
-        print("=" * 60)
-        covid = input("I have covid [y/n].\n")
+        i = input()
         
-        if covid != None:
-            print("yesssssss")
-            cbf_thread = threading.Thread(target=combineDBFtoCBF, daemon=True)
-            cbf_thread.start()
+        covid = not covid 
+
+        cbf_thread = threading.Thread(target=combineDBFtoCBF, daemon=True)
+        cbf_thread.start()
 
 
 
