@@ -1,10 +1,12 @@
 from socket import *
 import pickle
+import datetime
+import time
 
 if __name__ == '__main__':
     port = 51000
     stored_CBF = {}
-
+    
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('localhost', port))
 
@@ -15,15 +17,15 @@ if __name__ == '__main__':
     while 1:
         connectionSocket, address = serverSocket.accept()
         message = connectionSocket.recv(1024)
-        deloadPickle = pickle.loads(message)
+        # deloadPickle = pickle.loads(message)
 
-        CBF = deloadPickle['cbf']
-        nodeID = deloadPickle['node_id']
+        # CBF = deloadPickle['cbf']
+        # nodeID = deloadPickle['node_id']
     
 
-        stored_CBF[nodeID] = CBF
-        print("UPLOAD SUCCESSFUl")
-        connectionSocket.send("UPLOAD SUCCESSFUl")
-        connectionSocket.close()
+        # stored_CBF[nodeID] = CBF
+        # print("UPLOAD SUCCESSFUl")
+        # connectionSocket.send("UPLOAD SUCCESSFUl")
+        # connectionSocket.close()
 
 

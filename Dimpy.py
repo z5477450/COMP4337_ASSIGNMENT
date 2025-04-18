@@ -28,6 +28,12 @@ myChunks = []
 DBF = BloomFilter(max_elements=1000, error_rate=0.1)
 QBF = BloomFilter(max_elements=1000, error_rate=0.1)
 CBF = BloomFilter(max_elements=1000, error_rate=0.1)
+# A Dict which stores the current (max 6) bloom filters and their corresponding make times.
+# Key: time of DBF creation
+# Value: the DBF 
+currDBFs = {}
+programStartTime = datetime.datetime.now()
+# A list which includes all encIDs in the DBF.
 DBFlist = []
 DBFTimeStamp = []
 localNodeID = str(random.randint(1, 10))
@@ -39,6 +45,29 @@ covid = False
 def reconstructedSecret(shares):
     secret = recover_secret(shares)
     return int.from_bytes(secret, byteorder='big')
+
+def updateAllDBFS(t):
+    global DBF, DBFlist, DBFTimeStamp, allDBFs
+
+    current_time = datetime.datetime.now()
+    # time duration for QBF
+    delete_duration = t * 6 * 6
+        
+    if currDBFs == {}:
+        currDBFs[programStartTime] = DBF
+
+    DBF = BloomFilter(max_elements=1000, error_rate=0.1)
+    currDBFs[current_time] = DBF
+
+    count = 0
+    copyDBFs = currDBFs.copy()
+    for t in copyDBFs:
+        count += 1
+        if (current_time - t).total_seconds() >= delete_duration: 
+            currDBFs[t].popitem()
+
+
+
 
 def listenShares(k):
     global myChunks
@@ -258,30 +287,32 @@ def addEncIDToDBF(encid_hex):
 
 
 def DBF_manager(t):
-    global DBF, DBFlist, DBFTimeStamp, allDBFs
+    global DBF, DBFlist, DBFTimeStamp, allDBFs, currDBFs, programStartTime
     
     # time duration for QBF
     delete_duration = t * 6 * 6
     
     while True:
-        time.sleep(t * 6) 
+        sleepTime = t * 6
+        time.sleep(sleepTime) 
         
         current_time = datetime.datetime.now()
         
-        if DBFlist and DBFTimeStamp:
-            allDBFs.append((DBFTimeStamp[0], DBFlist.copy()))
         
-        # initialize new DBF
+        # CHANGED FROM HERE
+        if currDBFs == {}:
+            currDBFs[programStartTime] = DBF
+
         DBF = BloomFilter(max_elements=1000, error_rate=0.1)
-        DBFlist = []
-        DBFTimeStamp = [current_time]
-        
-        # delete old DBF
-        allDBFs = [(ts, encids) for ts, encids in allDBFs 
-                   if (current_time - ts).total_seconds() <= delete_duration]
-        # only keep avaliable DBF
-        if len(allDBFs) > 6:
-            allDBFs.pop(0)
+        currDBFs[current_time] = DBF
+
+        count = 0
+        copyDBFs = currDBFs.copy()
+        for t in copyDBFs:
+            count += 1
+            if (current_time - t).total_seconds() >= delete_duration: 
+                currDBFs[t].popitem()
+
         
         # Showing DBF infos
         print("====================Task 7-B====================")
@@ -297,6 +328,20 @@ def DBF_manager(t):
 
         print("\n")
 
+
+
+# if DBFlist and DBFTimeStamp:
+        #     allDBFs.append((DBFTimeStamp[0], DBFlist.copy()))
+# DBFlist = []
+# DBFTimeStamp = [current_time]
+
+
+# delete old DBF
+# allDBFs = [(ts, encids) for ts, encids in allDBFs 
+#            if (current_time - ts).total_seconds() <= delete_duration]
+# # only keep avaliable DBF
+# if len(allDBFs) > 6:
+#     allDBFs.pop(0)
 
 
 
@@ -348,33 +393,24 @@ def sendCBF(CBF):
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
 
-    # payload = {
-    #     'CBF': CBF,
-    #     'nodeID': localNodeID
-    # }
-    # clientSocket.send(pickle.dumps(payload))
-    # confirmation = clientSocket.recv(1024)
-
     clientSocket.close()
 
 
 def combineDBFtoCBF():
-    global allDBFs, CBF, CBFlist
+    global allDBFs, CBF, DBFlist
 
     CBF = BloomFilter(max_elements=10000, error_rate=0.1)
-    CBFlist = []
-
     
     current_time = datetime.datetime.now()
     print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
+    updateAllDBFS(int(sys.argv[1]))
+
     # Combine all the EncIDs from the stored DBFs into the QBF
-    for timestamp, encid_hex, CBF in allDBFs:
+    for timestamp, encid_hex in allDBFs:
         # retrive the elements in BF instead of modified the original data in DBF
         temp_dbf = copy.deepcopy(DBF)
         CBF |= temp_dbf
-        CBFlist.append(encid_hex)
-        
 
 
 
