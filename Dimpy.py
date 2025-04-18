@@ -12,7 +12,8 @@ from bloom_filter import BloomFilter
 import datetime
 from socket import socket, AF_INET, SOCK_DGRAM
 import copy
-import pickle
+import base64
+
 """
 pip install:
 cryptography
@@ -293,8 +294,7 @@ def DBF_manager(t):
     delete_duration = t * 6 * 6
     
     while True:
-        sleepTime = t * 6
-        time.sleep(sleepTime) 
+        time.sleep(t * 6) 
         
         current_time = datetime.datetime.now()
         
@@ -310,24 +310,27 @@ def DBF_manager(t):
         copyDBFs = currDBFs.copy()
         for t in copyDBFs:
             count += 1
-            if (current_time - t).total_seconds() >= delete_duration: 
-                currDBFs[t].popitem()
+            if (current_time - t).total_seconds() >= 1: 
+                currDBFs.pop(t)
 
-        
+
         # Showing DBF infos
         print("====================Task 7-B====================")
         print("\n[>] All stored DBFs and their EncIDs:")
-        for i, (timestamp, encids) in enumerate(allDBFs):
-            age_seconds = (current_time - timestamp).total_seconds()
-            print(f"\n    DBF {i+1}: Created at {timestamp.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds:.1f} seconds ago)")
-            print(f"    Contains {len(encids)} EncIDs:")
-            
-
-            for j, encid in enumerate(encids):
-                print(f"        {j+1}. {encid}")
+        for t, dbf in currDBFs.items():
+            age_seconds = (current_time - t).total_seconds()
+            print(f"\n    DBF {dbf}: Created at {t.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds} seconds ago)")
 
         print("\n")
 
+# for i, (timestamp, encids) in enumerate(allDBFs):
+        #     age_seconds = (current_time - timestamp).total_seconds()
+        #     print(f"\n    DBF {i+1}: Created at {timestamp.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds:.1f} seconds ago)")
+        #     print(f"    Contains {len(encids)} EncIDs:")
+            
+
+        #     for j, encid in enumerate(encids):
+        #         print(f"        {j+1}. {encid}")
 
 
 # if DBFlist and DBFTimeStamp:
@@ -349,8 +352,8 @@ def DBF_manager(t):
 task 8
 """
 def combineDBFtoQBF(t):
-    global allDBFs
-    QBF = BloomFilter(max_elements=10000, error_rate=0.1)
+    global allDBFs, currDBFs
+    QBF = BloomFilter(max_elements=1000, error_rate=0.1)
     Dt = t * 6 * 6
 
     while True:
@@ -367,11 +370,14 @@ def combineDBFtoQBF(t):
         current_time = datetime.datetime.now()
         print(f"[>] Combining DBFs into QBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
+        for dbf in currDBFs.values():
+            QBF.union(dbf)
+
         # Combine all the EncIDs from the stored DBFs into the QBF
-        for timestamp, encid_hex, DBF in allDBFs:
-        # retrive the elements in BF instead of modified the original data in DBF
-            temp_dbf = copy.deepcopy(DBF)
-            QBF |= temp_dbf
+        # for timestamp, encid_hex, DBF in allDBFs:
+        # # retrive the elements in BF instead of modified the original data in DBF
+        #     temp_dbf = copy.deepcopy(DBF)
+        #     QBF |= temp_dbf
 
 
         # Display the current state of the QBF after combining
@@ -387,48 +393,43 @@ def combineDBFtoQBF(t):
 """
 task 9
 """
+
+
+def combineDBFtoCBF():
+    global allDBFs, CBF, DBFlist, currDBFs
+
+    current_time = datetime.datetime.now()
+    print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
+
+    updateAllDBFS(int(sys.argv[1]))
+
+
+    # Combine all DBFs into a single CBF.
+    for dbf in currDBFs.values():
+        CBF.union(dbf)
+
+    
+
+    print("[>] Sending CBFs to backend.")
+    
+    tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF,), daemon=True)  
+    tcp_sendCBF.start()
+
 def sendCBF(CBF):
     global localNodeID
 
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
 
+    message = CBF.backend.array_
+    messageInBytes = message.tobytes()
+    messageInB64 = base64.b64encode(messageInBytes)
+    print(f"BLOOM FILTER ON NODE SIDE")
+    print(CBF)
+    clientSocket.send(messageInB64)
+
+    print(clientSocket.recv(30))
     clientSocket.close()
-
-
-def combineDBFtoCBF():
-    global allDBFs, CBF, DBFlist
-
-    CBF = BloomFilter(max_elements=10000, error_rate=0.1)
-    
-    current_time = datetime.datetime.now()
-    print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
-
-    updateAllDBFS(int(sys.argv[1]))
-
-    # Combine all the EncIDs from the stored DBFs into the QBF
-    for timestamp, encid_hex in allDBFs:
-        # retrive the elements in BF instead of modified the original data in DBF
-        temp_dbf = copy.deepcopy(DBF)
-        CBF |= temp_dbf
-
-
-
-    # Display the current state of the CBF after combining
-    print(f"[>] CBF now contains {len(CBFlist)} EncIDs.")
-
-    print("[>] Current CBF contains the following EncIDs:")
-    for i, encid in enumerate(CBFlist):
-        print(f"    {i + 1}. {encid}")
-
-    print("[>] Sending CBFs to backend.")
-    
-    sendToBackEnd(CBF)
-
-# Sending CBF to backend.
-def sendToBackEnd(CBF):
-    tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF,), daemon=True)  
-    tcp_sendCBF.start()
 
 
 def main():

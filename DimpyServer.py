@@ -1,12 +1,14 @@
 from socket import *
-import pickle
-import datetime
-import time
-
+from bloom_filter import BloomFilter
+import base64
+from bitarray import bitarray
+"""
+pip install bitarray
+"""
 if __name__ == '__main__':
     port = 51000
     stored_CBF = {}
-    
+
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('localhost', port))
 
@@ -17,15 +19,17 @@ if __name__ == '__main__':
     while 1:
         connectionSocket, address = serverSocket.accept()
         message = connectionSocket.recv(1024)
-        # deloadPickle = pickle.loads(message)
+        
+        tempBF = BloomFilter(max_elements=1000, error_rate=0.1)
 
-        # CBF = deloadPickle['cbf']
-        # nodeID = deloadPickle['node_id']
-    
+        receivedBytes = base64.b64decode(message)
+        receivedCBF = bitarray()
+        receivedCBF.frombytes(receivedBytes)
 
-        # stored_CBF[nodeID] = CBF
-        # print("UPLOAD SUCCESSFUl")
-        # connectionSocket.send("UPLOAD SUCCESSFUl")
-        # connectionSocket.close()
+        tempBF.backend.array_ = receivedCBF
 
+        response = "CBF upload successful."
+        connectionSocket.send(response)
+
+        connectionSocket.close()
 
