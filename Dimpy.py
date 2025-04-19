@@ -25,6 +25,8 @@ copy
 SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 50000
 
+generateQBFs = True
+
 myChunks = []
 DBF = BloomFilter(max_elements=1000, error_rate=0.1)
 QBF = BloomFilter(max_elements=1000, error_rate=0.1)
@@ -308,18 +310,18 @@ def DBF_manager(t):
 
         count = 0
         copyDBFs = currDBFs.copy()
-        for t in copyDBFs:
+        for ct in copyDBFs:
             count += 1
-            if (current_time - t).total_seconds() >= 1: 
-                currDBFs.pop(t)
+            if (current_time - ct).total_seconds() >= 1: 
+                currDBFs.pop(ct)
 
 
         # Showing DBF infos
         print("====================Task 7-B====================")
         print("\n[>] All stored DBFs and their EncIDs:")
-        for t, dbf in currDBFs.items():
-            age_seconds = (current_time - t).total_seconds()
-            print(f"\n    DBF {dbf}: Created at {t.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds} seconds ago)")
+        for tm, dbf in currDBFs.items():
+            age_seconds = (current_time - tm).total_seconds()
+            print(f"\n    DBF {dbf}: Created at {tm.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds} seconds ago)")
 
         print("\n")
 
@@ -352,11 +354,11 @@ def DBF_manager(t):
 task 8
 """
 def combineDBFtoQBF(t):
-    global allDBFs, currDBFs
+    global allDBFs, currDBFs, generateQBFs
     QBF = BloomFilter(max_elements=1000, error_rate=0.1)
-    Dt = t * 6 * 6
+    Dt = t * 6
 
-    while True:
+    while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
 
         # Meaning node has covid and no longer generates QBFs.
@@ -364,7 +366,7 @@ def combineDBFtoQBF(t):
             print("[>>] Covid detected. Terminating QBF generation.")
             break
 
-        if len(allDBFs) == 0:
+        if len(currDBFs) == 0:
             continue
 
         current_time = datetime.datetime.now()
@@ -373,21 +375,24 @@ def combineDBFtoQBF(t):
         for dbf in currDBFs.values():
             QBF.union(dbf)
 
-        # Combine all the EncIDs from the stored DBFs into the QBF
-        # for timestamp, encid_hex, DBF in allDBFs:
-        # # retrive the elements in BF instead of modified the original data in DBF
-        #     temp_dbf = copy.deepcopy(DBF)
-        #     QBF |= temp_dbf
+        sendQBFToBackend(QBF)
 
+        # print("[>] Current QBF contains the following EncIDs:")
+        # for i, encid in enumerate(QBF):
+        #     print(f"    {i + 1}. {encid}")
 
-        # Display the current state of the QBF after combining
-        print(f"[>] QBF now contains {len(QBF)} EncIDs.")
+def sendQBFToBackend(QBF):
+    clientSocket = socket(AF_INET, SOCK_STREAM)
+    clientSocket.connect(('localhost', 51000))
 
-        print("[>] Current QBF contains the following EncIDs:")
-        for i, encid in enumerate(QBF):
-            print(f"    {i + 1}. {encid}")
+    bloomType = "QBF".encode() + b"|"
 
-
+    message = QBF.backend.array_
+    messageInBytes = message.tobytes()
+    messageInB64 = base64.b64encode(messageInBytes)
+    print(f"BLOOM FILTER ON NODE SIDE")
+    print(QBF)
+    clientSocket.send(bloomType + messageInB64)
 
 
 """
@@ -409,26 +414,30 @@ def combineDBFtoCBF():
         CBF.union(dbf)
 
     
-
     print("[>] Sending CBFs to backend.")
     
     tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF,), daemon=True)  
     tcp_sendCBF.start()
 
 def sendCBF(CBF):
-    global localNodeID
+    global localNodeID, generateQBFs
 
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
+
+    bloomType = "CBF".encode() + b"|"
 
     message = CBF.backend.array_
     messageInBytes = message.tobytes()
     messageInB64 = base64.b64encode(messageInBytes)
     print(f"BLOOM FILTER ON NODE SIDE")
     print(CBF)
-    clientSocket.send(messageInB64)
+    clientSocket.send(bloomType + messageInB64)
 
-    print(clientSocket.recv(30))
+    print(clientSocket.recv(30).decode('utf-8'))
+    print(f"Node #{localNodeID} will now terminate QBF generation.")
+    generateQBFs = False
+
     clientSocket.close()
 
 
