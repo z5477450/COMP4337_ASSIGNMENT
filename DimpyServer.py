@@ -1,5 +1,5 @@
 from socket import *
-from bloom_filter import BloomFilter
+from custom_bloom_filter import BloomFilter
 import base64
 from bitarray import bitarray
 """
@@ -20,7 +20,13 @@ if __name__ == '__main__':
         connectionSocket, address = serverSocket.accept()
         data = connectionSocket.recv(1024)
         
-        tempBF = BloomFilter(max_elements=1000, error_rate=0.1)
+        print(f"Received data: {data}")
+        
+        tempBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+        print(f"Initialized BloomFilter: {tempBF}")
+
+        if tempBF is None or tempBF.backend is None:
+            print("Error: tempBF or its backend is None")
 
         parts = data.split(b"|")
         tagType = parts[0].decode()
@@ -30,6 +36,9 @@ if __name__ == '__main__':
         receivedBytes = base64.b64decode(message)
         receivedCBF = bitarray()
         receivedCBF.frombytes(receivedBytes)
+
+        print(f"Received bitarray: {receivedCBF}")
+        print(f"Backend before assignment: {tempBF.backend}")
 
         tempBF.backend.array_ = receivedCBF
 

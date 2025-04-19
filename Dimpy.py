@@ -8,7 +8,7 @@ from socket import *
 from decimal import Decimal
 import ast
 from subrosa import split_secret, recover_secret, Share
-from bloom_filter import BloomFilter
+from custom_bloom_filter import BloomFilter
 import datetime
 from socket import socket, AF_INET, SOCK_DGRAM
 import copy
@@ -28,9 +28,9 @@ SERVER_PORT = 50000
 generateQBFs = True
 
 myChunks = []
-DBF = BloomFilter(max_elements=1000, error_rate=0.1)
-QBF = BloomFilter(max_elements=1000, error_rate=0.1)
-CBF = BloomFilter(max_elements=1000, error_rate=0.1)
+DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+QBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+CBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
 # A Dict which stores the current (max 6) bloom filters and their corresponding make times.
 # Key: time of DBF creation
 # Value: the DBF 
@@ -39,7 +39,7 @@ programStartTime = datetime.datetime.now()
 # A list which includes all encIDs in the DBF.
 DBFlist = []
 DBFTimeStamp = []
-localNodeID = str(random.randint(1, 10))
+localNodeID = str(random.randint(1, 1000000))
 encidList = []
 allDBFs = []
 encodeIDFound = False
@@ -59,7 +59,7 @@ def updateAllDBFS(t):
     if currDBFs == {}:
         currDBFs[programStartTime] = DBF
 
-    DBF = BloomFilter(max_elements=1000, error_rate=0.1)
+    DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
     currDBFs[current_time] = DBF
 
     count = 0
@@ -233,7 +233,7 @@ task 6
 def encodingAndDeletingEncID(encid):
     print("===========================Task6===========================")
     global DBF,encid_hex
-    # DBF = BloomFilter(max_elements=1000, error_rate=0.1)
+    # DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
     encid_hex = encid.hex()
     encidList.append(encid_hex)
     encid_hex_list = encidList.copy()
@@ -305,7 +305,7 @@ def DBF_manager(t):
         if currDBFs == {}:
             currDBFs[programStartTime] = DBF
 
-        DBF = BloomFilter(max_elements=1000, error_rate=0.1)
+        DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
         currDBFs[current_time] = DBF
 
         count = 0
@@ -355,7 +355,7 @@ task 8
 """
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
-    QBF = BloomFilter(max_elements=1000, error_rate=0.1)
+    QBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
     Dt = t * 6 * 6
 
     while generateQBFs:
