@@ -7,7 +7,7 @@ pip install bitarray
 """
 if __name__ == '__main__':
     port = 51000
-    stored_CBF = {}
+    storedCBF = []
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
     serverSocket.bind(('localhost', port))
@@ -18,9 +18,14 @@ if __name__ == '__main__':
 
     while 1:
         connectionSocket, address = serverSocket.accept()
-        message = connectionSocket.recv(1024)
+        data = connectionSocket.recv(1024)
         
         tempBF = BloomFilter(max_elements=1000, error_rate=0.1)
+
+        parts = data.split(b"|")
+        tagType = parts[0].decode()
+        message = parts[1]
+
 
         receivedBytes = base64.b64decode(message)
         receivedCBF = bitarray()
@@ -28,8 +33,20 @@ if __name__ == '__main__':
 
         tempBF.backend.array_ = receivedCBF
 
-        response = "CBF upload successful."
-        connectionSocket.send(response)
+        if tagType == "CBF":
+            print(f"CBF received: {tempBF}")
+            storedCBF.append(tempBF)
+
+            response = "CBF upload successful.".encode('utf-8')
+            connectionSocket.send(response)
+
+        elif len(storedCBF) != 0:
+            print(f"QBF received: {tempBF}")
+            for cbf in storedCBF:
+                intersectBits = tempBF.backend.array_ & cbf.backend.array_
+                interesected = (intersectBits.any())
+
+                print(interesected)
 
         connectionSocket.close()
 

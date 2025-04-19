@@ -356,7 +356,7 @@ task 8
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
     QBF = BloomFilter(max_elements=1000, error_rate=0.1)
-    Dt = t * 6
+    Dt = t * 6 * 6
 
     while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
