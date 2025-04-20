@@ -1,0 +1,75 @@
+from socket import *
+from custom_bloom_filter import BloomFilter
+import base64
+from bitarray import bitarray
+import pickle
+
+"""
+pip install bitarray
+"""
+if __name__ == '__main__':
+    port = 51001
+    storedCBF = []
+
+    serverSocket = socket(AF_INET, SOCK_STREAM)
+    serverSocket.bind(('localhost', port))
+
+    # Queue size may need to be increased based on spec. 
+    serverSocket.listen(5)
+    print("Waiting for connection ...")
+
+    storedID = None
+    while 1:
+        connectionSocket, address = serverSocket.accept()
+        data = b""
+        while True:
+            packet = connectionSocket.recv(4096)
+            if not packet:
+                break
+            data += packet
+        receivedFilter = pickle.loads(data)
+    
+        tagType, correspondingBF = receivedFilter
+        print(tagType, correspondingBF)
+        print("!"*60)
+        # tempBF = BloomFilter(size_bits=819200, num_hashes=3)
+        # print(f"Initialized BloomFilter: {tempBF}")
+
+        # if tempBF is None or tempBF.backend is None:
+        #     print("Error: tempBF or its backend is None")
+
+        # parts = data.split(b"|")
+
+        # tagType = parts[0].decode()
+        # message = parts[1]
+
+
+        # receivedBytes = base64.b64decode(message)
+
+        # receivedBloomFilter = bitarray()
+        # receivedBloomFilter.frombytes(receivedBytes)
+    
+
+        # print(f"Received bitarray: {receivedBloomFilter}")
+        # print(f"Backend before assignment: {tempBF.backend}")
+
+        # tempBF.backend.array_ = receivedBloomFilter
+
+
+        # if tagType == "CBF":
+        #     print(f"CBF received: {tempBF}")
+        #     storedCBF.append(tempBF)
+
+        #     response = "CBF upload successful.".encode('utf-8')
+        #     connectionSocket.send(response)
+
+        # elif len(storedCBF) != 0:
+        #     print(f"QBF received: {tempBF}")
+        #     for cbf in storedCBF:
+        #         intersectBits = tempBF.backend.array_ & cbf.backend.array_
+        #         interesected = (intersectBits.any())
+
+        #         print(interesected)
+
+        connectionSocket.close()
+
