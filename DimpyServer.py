@@ -66,7 +66,8 @@ if __name__ == '__main__':
                 if match:
                     reply = "\nCLOSE CONTACT\n" + "!" * 60
                     conn.sendall(reply.encode('utf-8'))
-
+                else:
+                    conn.sendall("Not a close contact\n".encode('utf-8'))
 
 
                 
