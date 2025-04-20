@@ -1,75 +1,74 @@
-from socket import *
+from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from custom_bloom_filter import BloomFilter
-import base64
-from bitarray import bitarray
 import pickle
+from bitarray import bitarray
 
-"""
-pip install bitarray
-"""
 if __name__ == '__main__':
-    port = 51001
+    PORT = 51001
     storedCBF = []
 
     serverSocket = socket(AF_INET, SOCK_STREAM)
-    serverSocket.bind(('localhost', port))
-
-    # Queue size may need to be increased based on spec. 
+    # # allow quick restart
+    # serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+    serverSocket.bind(('localhost', PORT))
     serverSocket.listen(5)
-    print("Waiting for connection ...")
+    print(f"[Server] Listening on port {PORT}...")
 
-    storedID = None
-    while 1:
-        connectionSocket, address = serverSocket.accept()
+    while True:
+        conn, addr = serverSocket.accept()
+        print(f"[Server] Connection from {addr}")
+
         data = b""
         while True:
-            packet = connectionSocket.recv(4096)
-            if not packet:
+            chunk = conn.recv(4096)
+            if not chunk:
                 break
-            data += packet
+            data += chunk
+
+
         receivedFilter = pickle.loads(data)
-    
-        tagType, correspondingBF = receivedFilter
-        print(tagType, correspondingBF)
-        print("!"*60)
-        # tempBF = BloomFilter(size_bits=819200, num_hashes=3)
-        # print(f"Initialized BloomFilter: {tempBF}")
-
-        # if tempBF is None or tempBF.backend is None:
-        #     print("Error: tempBF or its backend is None")
-
-        # parts = data.split(b"|")
-
-        # tagType = parts[0].decode()
-        # message = parts[1]
+        tagType, receivedBF = receivedFilter
 
 
-        # receivedBytes = base64.b64decode(message)
-
-        # receivedBloomFilter = bitarray()
-        # receivedBloomFilter.frombytes(receivedBytes)
-    
-
-        # print(f"Received bitarray: {receivedBloomFilter}")
-        # print(f"Backend before assignment: {tempBF.backend}")
-
-        # tempBF.backend.array_ = receivedBloomFilter
+        print(f"[Server] Received tag='{tagType}', BloomFilter={receivedBF}")
 
 
-        # if tagType == "CBF":
-        #     print(f"CBF received: {tempBF}")
-        #     storedCBF.append(tempBF)
+        if tagType == "CBF":
+            storedCBF.append(receivedBF)
+            CBF_length = len(storedCBF)
+            print(f"Stored {CBF_length} CBF in total")
+            conn.sendall(b"CBF upload successful.")
 
-        #     response = "CBF upload successful.".encode('utf-8')
-        #     connectionSocket.send(response)
+        elif tagType == "QBF":
+            print("[Server] Recieveing QBF from client")
 
-        # elif len(storedCBF) != 0:
-        #     print(f"QBF received: {tempBF}")
-        #     for cbf in storedCBF:
-        #         intersectBits = tempBF.backend.array_ & cbf.backend.array_
-        #         interesected = (intersectBits.any())
+            bitarray_in_bits = receivedBF.backend.array_
+            bitarray_in_bytes = bitarray_in_bits.tobytes()
+            tempBF = bitarray()
+            tempBF.frombytes(bitarray_in_bytes)
+            
 
-        #         print(interesected)
+            if not storedCBF:
+                conn.sendall("Not close contact".encode('utf-8'))
+            else:
+                match = False
+                for cbf in storedCBF:
+                    CBF_bitarray = cbf.backend.array_
+                    CBF_bytes = CBF_bitarray.tobytes()
+                    tempCBF = bitarray()
+                    tempCBF.frombytes(CBF_bitarray)
 
-        connectionSocket.close()
+                    CBF_matching = (tempBF & tempCBF).any()
+                    if CBF_matching:
+                        match = True
+                        break
 
+                if match:
+                    reply = "\nCLOSE CONTACT\n" + "!" * 60
+                    conn.sendall(reply.encode('utf-8'))
+
+
+
+                
+
+        conn.close()

@@ -23,8 +23,6 @@ subrosa
 copy
 """
 
-SERVER_HOST = '127.0.0.1'
-SERVER_PORT = 50000
 
 generateQBFs = True
 recentENCId = None
@@ -222,25 +220,6 @@ def encodingAndDeletingEncID(encid):
     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
 
 
-    # encid_hex = encid.hex()
-    # encidList.append(encid_hex)
-    # encid_hex_list = encidList.copy()
-
-    
-    # for encid_hex in encid_hex_list:
-    #     DBF.add(encid_hex)
-    #     print("[>] Encoding to DBF")
-    #     encidList.remove(encid_hex)
-    #     print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
-    #     addEncIDToDBF(encid_hex)
-    #     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
-
-
-    #print(DBF)
-    #rint(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
-    # Delete the encid after added to the Bloom Filter
-    # encid_hex_list.remove(encid_hex)
-    #print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
 
 
 
@@ -265,20 +244,6 @@ def addEncIDToDBF(encid_hex):
     DBF.add(encid_hex)
     recentENCId = encid_hex
 
-    # for encid_hex in encidList:
-    #     if encid_hex not in DBF:
-    #         DBF.add(encid_hex)
-    #     if encid_hex in DBF:
-    #         print("\n[>] EncIDs in current DBF:")
-    #         for i in range(len(DBFlist)):
-    #             print(f"    {i+1}. {DBFlist[i]}")
-    #         # while len(encidList):
-    #         #     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.")
-    #             break
-    #display all encid in DBF
-
-
-
 
 def DBF_manager(t):
     global DBF, DBFlist, DBFTimeStamp, allDBFs, currDBFs, programStartTime
@@ -289,12 +254,10 @@ def DBF_manager(t):
     while True:
         time.sleep(t * 6) 
         
-        current_time = datetime.datetime.now()
-        
+        current_time = datetime.datetime.now()  
 
         DBF = BloomFilter(size_bits=819200, num_hashes=3)
         currDBFs[current_time] = DBF
-
 
         copyDBFs = currDBFs.copy()
         for ct in copyDBFs:
@@ -309,7 +272,6 @@ def DBF_manager(t):
             print(f"\n    DBF {dbf}: Created at {tm.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds} seconds ago)")
 
         print("\n")
-
 
 
 """
@@ -342,18 +304,31 @@ def combineDBFtoQBF(t):
 def sendQBFToBackend(QBF):
     global recentENCId
     clientSocket = socket(AF_INET, SOCK_STREAM)
-    clientSocket.connect(('localhost', 51000))
+    clientSocket.connect(('localhost', 51001))
 
-    bloomType = "QBF".encode() + b"|"
+    # bloomType = "QBF".encode() + b"|"
 
-    message = QBF.backend.array_
-    messageInBytes = message.tobytes()
-    messageInB64 = base64.b64encode(messageInBytes)
-    print(f"BLOOM FILTER ON NODE SIDE")
-    bits = QBF.backend.array_
-    print("Set bit indices:", [i for i, bit in enumerate(bits) if bit])
-    print(QBF)
-    clientSocket.send(bloomType + messageInB64)
+    # message = QBF.backend.array_
+    # messageInBytes = message.tobytes()
+    # messageInB64 = base64.b64encode(messageInBytes)
+    # print(f"BLOOM FILTER ON NODE SIDE")
+    # bits = QBF.backend.array_
+    # print("Set bit indices:", [i for i, bit in enumerate(bits) if bit])
+    # print(QBF)
+    # clientSocket.send(bloomType + messageInB64)
+    # print("[Client] awaiting server response…")   
+    # resp = clientSocket.recv(1024).decode('utf-8')
+    # print(f"[Client] QBF match result: {resp}")
+    message = ("QBF", QBF)
+    serialized = pickle.dumps(message)
+
+    clientSocket.sendall(serialized)
+    # tell the server we're done writing
+    clientSocket.shutdown(SHUT_WR)
+
+    # read and print the server’s reply
+    response = clientSocket.recv(30).decode('utf-8')
+    print(f"[Client] QBF match result: {response}")
 
 
 """
