@@ -13,6 +13,7 @@ import datetime
 from socket import socket, AF_INET, SOCK_DGRAM
 import copy
 import base64
+import pickle
 
 """
 pip install:
@@ -363,15 +364,17 @@ task 9
 def combineDBFtoCBF():
     global allDBFs, CBF, DBFlist, currDBFs
 
+    added = False
     current_time = datetime.datetime.now()
     print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
     # Verifies if the last key, value pair in the dictionary is the same, if not the same as the current DBF being edited,
     # then needs to be added into the dictionary to be sent to the backend.
-    lkey = list(currDBFs.keys())[-1]
+    lkey = list(currDBFs.items())[-1][1]
     if len(currDBFs) < 6 and lkey.backend.array_ != DBF.backend.array_:
         current_time = datetime.datetime.now()
         currDBFs[current_time] = DBF
+        added = True
 
     # Combine all DBFs into a single CBF.
     for dbf in currDBFs.values():
@@ -380,32 +383,36 @@ def combineDBFtoCBF():
     
     print("[>] Sending CBFs to backend.")
     
-    tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF,), daemon=True)  
+    tcp_sendCBF = threading.Thread(target=sendCBF, args=(CBF, added), daemon=True)  
     tcp_sendCBF.start()
 
-def sendCBF(CBF):
+def sendCBF(CBF, added):
     global localNodeID, generateQBFs, currDBFs
 
     clientSocket = socket(AF_INET, SOCK_STREAM)
-    clientSocket.connect(('localhost', 51000))
+    clientSocket.connect(('localhost', 51001))
 
-    bloomType = "CBF".encode() + b"|"
-
-    message = CBF.backend.array_
-    messageInBytes = message.tobytes()
-    messageInB64 = base64.b64encode(messageInBytes)
-    print(f"BLOOM FILTER ON NODE SIDE")
-    print(CBF)
-    clientSocket.send(bloomType + messageInB64)
-
-    currDBFs.popitem()
-
+    message = ("CBF", CBF)
+    serialize = pickle.dumps(message)
+    clientSocket.send(serialize)
+    clientSocket.shutdown(SHUT_WR)
+    
     print(clientSocket.recv(30).decode('utf-8'))
     print(f"Node #{localNodeID} will now terminate QBF generation.")
     generateQBFs = False
+    if added: 
+        currDBFs.popitem()
 
-    clientSocket.close()
 
+
+# bloomType = "CBF".encode() + b"|"
+
+    # message = CBF.backend.array_
+    # messageInBytes = message.tobytes()
+    # messageInB64 = base64.b64encode(messageInBytes)
+    # print(f"BLOOM FILTER ON NODE SIDE")
+    # print(CBF)
+    # clientSocket.send(bloomType + messageInB64)
 
 def main():
     global localNodeID, ephIDprivKey, ephIDBytes, t, k, n, covid
