@@ -1,0 +1,113 @@
+============================================================
+DIMY Client starting
+Local_Node_ID: 940055
+============================================================
+If covid positive please press [y] at any given time.
+Do you have covid?
+============================================================
+New EphIDInt generated: 3594760963212499842277404566129903401639588109443866713876739529736876659796
+[>] Broadcasting: b'\x01\x03\x01\xd3x\xddd\xb8>\xa2ii\x8fk\x93\xf9\x9fI\xb7\xf7dF\xc9\xf4u\xbei\x86\xf2\x12Sg\xc9O\x9a'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x05\xf3\xfd\xdb|\x93\xca\xde\x9d\x98\x8ehr0\xc1\xda\xf6\xc7\x05]\rB\xd0\xed`\xb7\xe9\x9f\xaf\xdf\xb1\x8f\xbe' from client number 903535
+[>] Received Chunk 1 out of 3: b'\x01\x03\x057\x1a\xf5\xed\xaa\xb0\x8f\x8a\xb9<.Y\x1e\xe6\xa8r"\xd4>\xe4\xc2.\\Z\x05\r\xd3\xbe\xbci\xaa\xbd' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02\xa5l\x01\xb8hP\xc0i\xc7dz31/\xdf\xbd<\x8cC\xc1y\x837/\x07\xa6j2\xf5r\xa1\xfe'
+[>] Broadcasting: b'\x01\x03\x03q\xe6L\xdao\x91\\\x02h\x17\xa7>\xbeB\xa5>\xa5\x9dn+\x12\xf8z\xda\x18\x9d\t\xfeA\x94\xfa0'
+[>] Broadcasting: b'\x01\x03\x04\x1c\xa7\x85\x92Cb\x80\x16\xcf4\x9a5\xebO\x90[=\xdd\xe8H\x88\xf8\x03\xf2\x08s\x1ef\xd0\x8bi\xaf'
+[>] Broadcasting: b'\x01\x03\x05\xc8-\xc8\xf0D\xa3\x1c}`GG8d"\xea\xd8\xa4\xcc\xc5\xa2\xe3\x83N\x07\x17H}\xaadm2a'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01-\x89\x14\xa2\xf8\xb5\x82\xe8\xbd=+\x93\xf1gr\x1c\xe1l\x8a\xee\x14\x8b\x14\x9a\xcb`\x96S\xee\xff>\xd7' from client number 903535
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01T7\x06V\x1c\xa2\x82\x00\xb8\xec\x84Z\xe8e\xd2S\xaf\x05\x8cx\xcd\xd2\xae\xa3\x04\xa2\xbd\x185\xa2\xe5\x18' from client number 941770
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02Q\xb4\xb3\xbe\x9eu\xf2\x85\xfe\xf7\xf8\x9a\xee\x926\xce,;\xda"iV2uu^\rz\x9c`\xe8\xe1' from client number 903535
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02|\x8d\xb6\xe1\xc5%\xcb\xcb\x0b\xfd\xdf(.\xde\xd9\x0cc\xd1aQ\xf2gC(T\xd0@\x1b\x15\xb4\xd8\xfd' from client number 941770
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03\xdb\x1e\xe0\x00\tX\x1f\xcf\xa3\x85!\xca\xfb\x19\xafG0e\xfeiEU\xe3,\x91\x1d\xef\x0f\x83djI' from client number 903535
+Correct secret has been found. EncID will now be made with client number 903535
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 8b6c255bfedea2d8f4c77af4971aa9171454569dafb9df46aae64bca9d6462c1
+
+===========================Task5B===========================
+LocalNode 940055 and remoteNode 903535 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 8b6c255bfedea2d8f4c77af4971aa9171454569dafb9df46aae64bca9d6462c1 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:03:15] Current DBF has: 1 EncIDs stored
+[>] EncID 8b6c255bfedea2d8f4c77af4971aa9171454569dafb9df46aae64bca9d6462c1 added to Daily Bloom Filter.
+
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03]\xba\x8b<A\xe2E\xa9\xf1n>\x13]6\x90\x82\x19:\x9a\xa5K\tdK\xa3y\xa9\xa9\x84\x00\x0b\xf9' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 400ddac31f6e5b13b1443c8575cf9fded75d1e629e8ed3e1fca35d709ed7fa22
+
+===========================Task5B===========================
+LocalNode 940055 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 400ddac31f6e5b13b1443c8575cf9fded75d1e629e8ed3e1fca35d709ed7fa22 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:03:15] Current DBF has: 2 EncIDs stored
+[>] EncID 400ddac31f6e5b13b1443c8575cf9fded75d1e629e8ed3e1fca35d709ed7fa22 added to Daily Bloom Filter.
+
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\x99[\xe7z\xab\xb3%\x16zO\\\xb8p\xc7\xb7p\xcd\xc2\xb6\xf4\xbeb\x13\xa4\x89\x18(p|\xac#!' from client number 903535
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04P\xa0\xcb^\x01\x9c\xb4\x84~\xaa\x9d\x0f\xbd}r\x11\xb1u\x9a\x95\xf2\r \xb3\xf5\xd8%\xc6\xcb \xa6L' from client number 941770
+[>] Combining DBFs into QBF at 2025-04-20 13:03:19
+[Client] QBF match result: 
+============================================================
+New EphIDInt generated: 16296289238316270097976093879528564465942740652505647671773481258189797313042
+[>] Broadcasting: b'\x01\x03\x01\xabV?wV\xd7K\xbbqO-\tkB<\xc9\x86\xadS\xb1\x8a\xba\xfdX\x88\x94\xf6g"\xa4*\xb2'
+[>] Received Chunk 2 out of 3: b"\x01\x03\x05\x13\xf1\xb4\xc4<\x9e\xc8\\'=\x85\xe8eL.\xf9\xd1\x9c\x92\xbf\x92a\xc2\xfdm[\xca\x05c\xa8\xa1\x89" from client number 903535
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05q\x97\xf6\x83\x85[:\xe6\x849|4\xce\x95;\x9f\xcb\x9eaaKc\x07\xd0\x02q\xcctZ\x94uH' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02\xa3\xf4\xb110\xfbUc\\\x10\x8a\x1b\xc8\xb5dy\xc7\x00\xd0\xf0\x96t<\xde\\\xd0\x1d\xd6c\xb7H1'
+[>] Broadcasting: b'\x01\x03\x03,\xa5\xd14\xa4\xc1\xafh\xde\xd6\x96\x9b\x9f\xb0ZV\xf8V\xe8\xa5\xcc\xba&\x9d\x86\x86N\xca\xdcb\xa8\x91'
+[>] Broadcasting: b'\x01\x03\x04\x0f\xa5 \xcb\x14RN4@\x98f\xa4\xbcu\xa6\xeaEQ\x07\x02\xb9^\xdb\x9d\xfc(\xb6X !\xaa\xaf'
+[>] Broadcasting: b'\x01\x03\x05\x80\xf4@\xce\x80h\xb4?\xc2^z$\xebp\x98\xc5z\x07?W\xe3\x90\xc1\xde&~\xe5D\x9f\xf4J\x0f'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01XUb\x80\xe5]\x8b\x94\x9b\xdd\xe1\x95\x80\x9eu\x99\xb4\xf8=\x81\x0ch\xe5\xe8u\xfc\xe4\xaa\xbdI\xf9E' from client number 903535
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01V\x98\x18\x92}\xae\xcaS\x9a{\xa3\xdbP3\xa8\x06`\xf6=\xbb\xa6\x99\x99V\x1f\x19\x85A\xf9b\xbb\xf8' from client number 941770
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02j\xd0\xbb\xae\xd0K}\x88\xef\xcf\x8e\xc9\xd65\x80\x88\xc9|*\xd5\xdc\xcdS"\xa7\xd0/suQy\xa6' from client number 903535
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02\xae\x84v\x19Z\x87)\x00;#\x08x\x98dy\x11\x1e8\xa9X\xfe\xe0\x84\x8a#:\xe3\xbfxn5\x9d' from client number 941770
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03Cj\xf2;\x90!}\xd3\x03\x04\xd7+\xac\xbb\xe0F$A\x1cFE\x00\x1f\x98\x0e\xfb\xc1O\xdd\xcb\xa5\xf4' from client number 903535
+Correct secret has been found. EncID will now be made with client number 903535
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 483b07b5301dd91ba6e0fb498b061fd83ab70706fa716b2497a60827cae07642
+
+===========================Task5B===========================
+LocalNode 940055 and remoteNode 903535 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 483b07b5301dd91ba6e0fb498b061fd83ab70706fa716b2497a60827cae07642 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:03:15] Current DBF has: 3 EncIDs stored
+[>] EncID 483b07b5301dd91ba6e0fb498b061fd83ab70706fa716b2497a60827cae07642 added to Daily Bloom Filter.
+
+[>] Received Chunk 3 out of 3: b'\x01\x03\x030Zh\x96\xa6Z\x9bH\x99\x9f5-\xdc\xafC\xe0;\xcf\xeaB}S\xcf\xb3y&\x96@m\xadr1' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: ca5eaf0fec7a3f60df42b602391b5f8927602bf3fa4051ad493e7b65d4eafc87
+
+===========================Task5B===========================
+LocalNode 940055 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID ca5eaf0fec7a3f60df42b602391b5f8927602bf3fa4051ad493e7b65d4eafc87 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:03:15] Current DBF has: 4 EncIDs stored
+[>] EncID ca5eaf0fec7a3f60df42b602391b5f8927602bf3fa4051ad493e7b65d4eafc87 added to Daily Bloom Filter.
+
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04x\xca\x18f\xb6Y\x89\xa8+\xf4\xf2\x8f\xef\xd2k\x89=\x8dfB\x9c\xfc\xd5\xce\xe2\x86\xe5\x05yNL:' from client number 903535
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\x1bV\xcd\x11\xcc\xcfb7U>4\x12\x07\x9f\x15\\\xb7n\x94Q\xbdOS\xd4\xecg\x1f\x01\x11wr\xc3' from client number 941770
+[>] Combining DBFs into QBF at 2025-04-20 13:03:49
+[Client] QBF match result: 
+============================================================
+New EphIDInt generated: 106615995251195061661965080033622180235165785223729164706246485437921003751795
+[>] Broadcasting: b'\x01\x03\x01zF|*;8^_F\x90/\xd6`\xbe\x14\xdb\x03\xf6\xbcT\x1e\x1e\xe1P1`}\xbd\x071\x98\x1c'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05QpQ\xf3\xf63\x89\xf3\xc7?\xabm\x95\\\x0bG\xd0\xb0P\xd1\x051\x99tK\xad\x0b9\xd1\xd4\x90h' from client number 903535
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\x85\x88\xd3\x9e0\x12\xd0\x7f\xf7\x82\tGCT/\xad\x92\x99\xd7K>\xfc\x18\xed\xb6{j\xfe\x04\xb45o' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02i\x88~\xd2\xa1l\x87\x12\x9d0\xd1\xc6q\xb0.\xeb2\xc1\xf6\xd9\x05x~%\xbeU?\xffpM\xb5Q'
+[>] Broadcasting: b'\x01\x03\x03\xf8x\x815\xe3\x07=nVL\xb1f{\xd9\xcf\x7f\xae\x1c\x0b\xc9\x01\xe2\xcb}\xd8&\x04\xff\x82:\xe4>'
+[>] Broadcasting: b'\x01\x03\x04.\xf3\x02\xf6\xb9\xa4\x12H\xef\xdf\x0b\x8c`\xfbPv\xd0\xd3w\xa7x\x06w\x10\n)\x88*\x17\xe9d\xea'
+[>] Broadcasting: b'\x01\x03\x05\xbf\x03\xfd\x11\xfb\xcf\xa84$\xa3k,j\x92\xb1\xe2L\x0e\x8a\xb7|\x9c\xc2HlZ\xb3*\xe5\x9e5\x85'

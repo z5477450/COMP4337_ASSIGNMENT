@@ -1,0 +1,31 @@
+[Server] Listening on port 51001...
+[Server] Connection from ('127.0.0.1', 40078)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 40080)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 37890)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 37902)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 35288)
+[Server] Received tag='CBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+Stored 1 CBF in total
+[Server] Connection from ('127.0.0.1', 45554)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 34856)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 57312)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 36408)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client
+[Server] Connection from ('127.0.0.1', 44532)
+[Server] Received tag='QBF', BloomFilter=BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3)
+[Server] Recieveing QBF from client

@@ -1,0 +1,246 @@
+============================================================
+DIMY Client starting
+Local_Node_ID: 903535
+============================================================
+If covid positive please press [y] at any given time.
+Do you have covid?
+============================================================
+New EphIDInt generated: 31640536655734449717438974050367925948445537814753803879513601142523364837691
+[>] Broadcasting: b"\x01\x03\x014N#\xa3\x86A\xe8'(\\\tP\xf0sUg=\xdc;c{\xd5\x90\xe1\xaf\xc2ei_u\x9a\x8e"
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01\x85*F\xb2\x83m\xa9\x0b\xe6\xe3K\x1cIM\xa0\x9ch+\xc7\xc5\x956 \xfd\xe8\xd2\xe7*\x8e\x1c\x82\x04' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02\xb2\xa8\xd77h\xe7\x98\xc3\xc1\xf8\x96%\x8e\x84w\xc8\xc2{\xb4\xa5\nHZmrpX@\x1a\x82\xc6\x88'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02e\x14H\xb8\xe4\x08\x06\x1b\x8d\xba\xd4\x86:\xf4\xf6,\x1b\x1e\x18F1\x87\xb8\xa3\x02\xa4\x99U\xdd\x9c\x81\xd4' from client number 941770
+[>] Broadcasting: b'\x01\x03\x03\xc3\x15\x1c/P\x1e\x8f}`\xb9\xf8\xae\x1fq*\x86}\x82\xa9\x81\xa3X\xa3LE\xb7\xc9\xab#\xb8U='
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03\x85\xdd\xc5\xb6\xfan\x99\xbf\xb7;\x1c\xab\\D\x0c\xc7\xc4\x8f\x8f\xfc\xb2YuER\xbb\x16\x17pg[\xa8' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: f81625d99b43c074196f1181feabcb24726b863225380fc845895472f458da7e
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID f81625d99b43c074196f1181feabcb24726b863225380fc845895472f458da7e deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 1 EncIDs stored
+[>] EncID f81625d99b43c074196f1181feabcb24726b863225380fc845895472f458da7e added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04\xe4\xadh~\xa7\xe8\x0e\xd9]K*\xdd\xd1c\xcf\x1f\x96s\x8f\x06\x0bFJ\x10qB\xd5!\xa6\x1cic'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04$\xf5\xe8\xd4`\x1c\x02m\xea\xe0p\xddL<\x0e\xaf\xd0\xab/N\xb0;:\xd7\xbfXl\xc0\x0e\x7f2p' from client number 941770
+[>] Broadcasting: b'\x01\x03\x05\x95\x10\xa3f\x9f\x11\x19g\xfc\nDV@\x96\x92Q)\x8a\x92"\xa2V\xb31F\x85D\xca\x9f&\xfa\xd6'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\xc4<e\xda~z\x9d\xc9\xd0a\xb8\xf0*\x8c\xf4D\x0f:\xb8\xf43\xe5\xf71\xefG\xe3\x82\xa3\x84\xe8\x0c' from client number 941770
+[>] Combining DBFs into QBF at 2025-04-20 13:01:39
+[Client] QBF match result: Not close contact
+============================================================
+New EphIDInt generated: 17901982428472096833293843745056658737617622245417510680165955682753691402066
+[>] Broadcasting: b'\x01\x03\x01\xbc\xc1V\xf9\\$\x92o\xaa\xe0b\x914.\x10\x0c~\\\xcaE\xf0\xdb\xad\xbb\x85=\x8bU\x9b)\x97\xa2'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01\xde\xd6\x18\xa8\x92\x9a\xf1\x99];\xf0\xf9\xa5\x8c\x8e\xd6\x15\xe6\xf0\x8d\x1c\xfe\x17FBc\xa0\xfdgtx\xbb' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02:\xafF\xeeT\x9dZ\x8c\x87\xa9\xeb\xaf\x9a\xe6\xc6T\xa5\xf0\xab\tA\xd7B\xc4n\xd7\xf7m\xb0\xed\x0f\xac'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02TGe\xaf\xa3\x19\xe7\x96\xa7\xf0Y\x10b\x16\x1ae\x0c}8\x9cP\x14\xa1\x16\xa9\x82\xadYx\xae\xd5j' from client number 941770
+[>] Broadcasting: b"\x01\x03\x03\xa1\xfa9\xae\\L\x9c\xd6*\xbe|\x81/\x9b\x19'\xc7At}\xc3\xff\xa3\xeb\x02\xf5s\xc8\xe5\xf6\xa7\\"
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03\xa0\x97\xc5~\x8e\x9b3_]\x15\xb8\\\xf4\xd8v\xaeN\xc0\x8a%\x87\xe4\xfc\x06u\xac\xcb\xd2\x1e\xd5\xb3\xf8' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 4650eee14a427df04cc67fb8f7ea8d81185c7481ff37e2e342d4e30df00f8123
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 4650eee14a427df04cc67fb8f7ea8d81185c7481ff37e2e342d4e30df00f8123 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 2 EncIDs stored
+[>] EncID 4650eee14a427df04cc67fb8f7ea8d81185c7481ff37e2e342d4e30df00f8123 added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04\xdd\x90\x85f\x14L\x1ah5\x90e\xb4\x04\x05[0\x9a\\\x1e,\xa4p!\x0c\x9b\x92e\xccO\x1e\xa8\xa1'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\xd4A7i\x84be\xe06S\xf3\x10\x12\x8b\x89\x14\xb0\x10\xa2V^\x93\xd8M\x96\xb2\xba\xa0\x11\x11\x8fD' from client number 941770
+[>] Broadcasting: b'\x01\x03\x05F\xc5\xfa&\x1c\x9d\xdc2\x98\x87\xf2\x9a\xb1x\x84C\xf8\xed\xc1X&X\xc0#\xf7\xb0\xe1i\x1a\x05\x00Q'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05 \x91\x97\xb8\xa9\xe0\xb1)\xcc\xb6\x12\\\x84E\xe5\xdf\xf2\xad\x10\xef\x89c\x85]J\x9c\xdc+wj\xe9\xd6' from client number 941770
+[>] Combining DBFs into QBF at 2025-04-20 13:02:09
+[Client] QBF match result: Not close contact
+============================================================
+New EphIDInt generated: 16131228520079827379740521333014723779992301953262209905897897611532431646251
+[>] Broadcasting: b'\x01\x03\x01@:8$)\x8e\x1d7\x88T\xdc\x0f<\xa4\x90_\xa8\x81o5u\xd3N\x1c\xe3SH\x92\x8b\x10\x1b\x0b'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01\xecll$\xc8\xb4b\xb3\xd5\xb5d\x06I\xd0R}\xc8\x9b\rzu;\xba1\x8a\xc5\xcd\xbc\x9f\xab\xa5\xd7' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02X\xfe%\x9dN\xa2(\xc5[\xecu\x83}\xb0\xee\x14\n$\xc4`\x10\xbdD]g\xec\xdbi\xca\xa5\xe20'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02\x12\xf1\x83\x81\xa2\x02\x08\xb6\xe9\xc1\xaa\xdbw\x05\xe6\x03\xabE\xa7\x13\xd1@\xedk\x0b\x93\x95\xb4m\xe0Xk' from client number 941770
+[>] Broadcasting: b"\x01\x03\x03;m\xee\x11\x15\xec\x13\xe0\xf8\xc4rj\x17'\r\xde\x1c\x8f6\xd2\xb3\x84\xda\xfc\xa5\xbaew\xc3P'\x10"
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03$\x99\xd4%;\xf5\xf3N\r\xa5\x95\xbf\xc5\xed\xbcQ7A\xcd$\x0f\xe2\x8e\r%\x1d\xb5j\xa3\xca\xa2\xc2' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: f050ad1dbef1230cde452acb4cbd7ab574444c07527ef0dd0731f41041125fb3
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID f050ad1dbef1230cde452acb4cbd7ab574444c07527ef0dd0731f41041125fb3 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 3 EncIDs stored
+[>] EncID f050ad1dbef1230cde452acb4cbd7ab574444c07527ef0dd0731f41041125fb3 added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04\x17\xb43\x1a\x14\xd1\xc1\xe5\x7fj*\xaa\xd1\xc0I\xb4\x9b!\x81\x04\x1b\xd0\x19\xb4\xe4\xc3\x9f\x14a\x97$j'
+[>] Received Chunk 1 out of 3: b"\x01\x03\x04\xf7a\x08\xd1\xe9'K\xf2\xb6\xbc\xa8\xd4\x19\xb7\xbca\xecU\xac1\x06\x1eT\xc2\x00\xb1\xfd\n\xf3\x97\xdc?" from client number 941770
+[>] Broadcasting: b"\x01\x03\x05t'\xf8\x96O\x9f\xfa\xc0\xdcB-C\xbbW\xaa~\x8d\x8as\xb6\xb8\xe9\x87\x15&\x95!\nhb\xe1J"
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\xc1\t_up\xd0\xb0\nR\xd8\x97\xb0\xab_\xe63pQ\xc6\x06\xd8\xbc7\xa4.?\xdd\xd4=\xbd&\x96' from client number 941770
+[>] Combining DBFs into CBF at 2025-04-20 13:02:23
+[>] Sending CBFs to backend.
+CBF upload successful.
+Node #903535 will now terminate QBF generation.
+====================Task 7-B====================
+
+[>] All stored DBFs and their EncIDs:
+
+    DBF BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3): Created at 2025-04-20 13:01:08 (91.000613 seconds ago)
+
+    DBF BloomFilter(ideal_num_elements_n=10000, error_rate_p=0.100000, num_bits_m=819200, num_probes_k=3): Created at 2025-04-20 13:02:39 (0.0 seconds ago)
+
+
+[>>] Covid detected. Terminating QBF generation.
+============================================================
+New EphIDInt generated: 15447331109233726528079022263161002874216405635319669156636495309897169386550
+[>] Broadcasting: b'\x01\x03\x01\xbc:Ls\x17\xb4$\x10\x99v-QF\x02\xacPJ\x1d\xb2\xea\xed\x97\xcc}\x00U\xd4\x1et\x93\xd2\x12'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01W\x8c]\x9c\xc1\xce\xb7\xee\n\xf7\x10_\x12\xbd\xff\x99F\xe9}\x01\xdb\x07N`\x89\x13\xc9\xb5\xb2h\x1cG' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02~\xa5\xdd\x8d\xae\xd9\xb2\x9c\xf6D\x08w\xbf\xda\xb3%\xba\x07?p\xd7|V\x8d\x1b\xa4\xda\xe7\xb8\x14.t'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02@\xd9\xd2\xbd\xd25\xd4\xb7\xc4]\xe1\xd1`\xe1\xef\x04$\xa7\xd8\x83 4\x07\xefG+)\x8a\xbby\xffZ' from client number 941770
+[>] Broadcasting: b"\x01\x03\x03\xe0\xb9p\xd5'\x84\xf3?\x97JM8`9g\xdb\xff\xdb\xff\x00\x8e!\xe1\xd0>\x01\xe4\x1a\x89\xf3\xc0P"
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03C\xe5*\x977S\x82N\x9e7_5PB\x0f\xa7}\xbc\x7f\x95\x11\xcaD\xde\x94\xe0#\xcc\xbf.\xe8D' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 7700cb5f1df3e9813e68d980c81d960e02de617e91bc24624d0108e26ec1a5f4
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 7700cb5f1df3e9813e68d980c81d960e02de617e91bc24624d0108e26ec1a5f4 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 4 EncIDs stored
+[>] EncID 7700cb5f1df3e9813e68d980c81d960e02de617e91bc24624d0108e26ec1a5f4 added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04m\xe1v$\x1a\x97\x9f>\xf9\x80-=\xef"\x0e\x08\x82\xd9\x9d}\x1b\x8dZ=\x92L\xa1R\xeeVa\x9a'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x044&\r\xc7O\xd6\xd9s\xe3V\x90\xbd.EH\xd1{\xcf\x99\xf2\xf3\xd0\x1fk\xd6\xc6\xd9\xf8\xb8>\xbd\xa3' from client number 941770
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01\xd3x\xddd\xb8>\xa2ii\x8fk\x93\xf9\x9fI\xb7\xf7dF\xc9\xf4u\xbei\x86\xf2\x12Sg\xc9O\x9a' from client number 940055
+[>] Broadcasting: b'\x01\x03\x05\xf3\xfd\xdb|\x93\xca\xde\x9d\x98\x8ehr0\xc1\xda\xf6\xc7\x05]\rB\xd0\xed`\xb7\xe9\x9f\xaf\xdf\xb1\x8f\xbe'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x057\x1a\xf5\xed\xaa\xb0\x8f\x8a\xb9<.Y\x1e\xe6\xa8r"\xd4>\xe4\xc2.\\Z\x05\r\xd3\xbe\xbci\xaa\xbd' from client number 941770
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02\xa5l\x01\xb8hP\xc0i\xc7dz31/\xdf\xbd<\x8cC\xc1y\x837/\x07\xa6j2\xf5r\xa1\xfe' from client number 940055
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03q\xe6L\xdao\x91\\\x02h\x17\xa7>\xbeB\xa5>\xa5\x9dn+\x12\xf8z\xda\x18\x9d\t\xfeA\x94\xfa0' from client number 940055
+Correct secret has been found. EncID will now be made with client number 940055
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 1914f6908e04b38c138d95f9477c2d765724fddc1e7d3730e45b65ed7c5d52d0
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 940055 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 1914f6908e04b38c138d95f9477c2d765724fddc1e7d3730e45b65ed7c5d52d0 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 5 EncIDs stored
+[>] EncID 1914f6908e04b38c138d95f9477c2d765724fddc1e7d3730e45b65ed7c5d52d0 added to Daily Bloom Filter.
+
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\x1c\xa7\x85\x92Cb\x80\x16\xcf4\x9a5\xebO\x90[=\xdd\xe8H\x88\xf8\x03\xf2\x08s\x1ef\xd0\x8bi\xaf' from client number 940055
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\xc8-\xc8\xf0D\xa3\x1c}`GG8d"\xea\xd8\xa4\xcc\xc5\xa2\xe3\x83N\x07\x17H}\xaadm2a' from client number 940055
+============================================================
+New EphIDInt generated: 75598576151294232061028941260709117035340700923096553861872046097997741407359
+[>] Broadcasting: b'\x01\x03\x01-\x89\x14\xa2\xf8\xb5\x82\xe8\xbd=+\x93\xf1gr\x1c\xe1l\x8a\xee\x14\x8b\x14\x9a\xcb`\x96S\xee\xff>\xd7'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01T7\x06V\x1c\xa2\x82\x00\xb8\xec\x84Z\xe8e\xd2S\xaf\x05\x8cx\xcd\xd2\xae\xa3\x04\xa2\xbd\x185\xa2\xe5\x18' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02Q\xb4\xb3\xbe\x9eu\xf2\x85\xfe\xf7\xf8\x9a\xee\x926\xce,;\xda"iV2uu^\rz\x9c`\xe8\xe1'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02|\x8d\xb6\xe1\xc5%\xcb\xcb\x0b\xfd\xdf(.\xde\xd9\x0cc\xd1aQ\xf2gC(T\xd0@\x1b\x15\xb4\xd8\xfd' from client number 941770
+[>] Broadcasting: b'\x01\x03\x03\xdb\x1e\xe0\x00\tX\x1f\xcf\xa3\x85!\xca\xfb\x19\xafG0e\xfeiEU\xe3,\x91\x1d\xef\x0f\x83djI'
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03]\xba\x8b<A\xe2E\xa9\xf1n>\x13]6\x90\x82\x19:\x9a\xa5K\tdK\xa3y\xa9\xa9\x84\x00\x0b\xf9' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 2a6581043e4a20c7cbac8b15cee3844dba73c46ab29226363ddb7995b484465b
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 2a6581043e4a20c7cbac8b15cee3844dba73c46ab29226363ddb7995b484465b deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 6 EncIDs stored
+[>] EncID 2a6581043e4a20c7cbac8b15cee3844dba73c46ab29226363ddb7995b484465b added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04\x99[\xe7z\xab\xb3%\x16zO\\\xb8p\xc7\xb7p\xcd\xc2\xb6\xf4\xbeb\x13\xa4\x89\x18(p|\xac#!'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04P\xa0\xcb^\x01\x9c\xb4\x84~\xaa\x9d\x0f\xbd}r\x11\xb1u\x9a\x95\xf2\r \xb3\xf5\xd8%\xc6\xcb \xa6L' from client number 941770
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01\xabV?wV\xd7K\xbbqO-\tkB<\xc9\x86\xadS\xb1\x8a\xba\xfdX\x88\x94\xf6g"\xa4*\xb2' from client number 940055
+[>] Broadcasting: b"\x01\x03\x05\x13\xf1\xb4\xc4<\x9e\xc8\\'=\x85\xe8eL.\xf9\xd1\x9c\x92\xbf\x92a\xc2\xfdm[\xca\x05c\xa8\xa1\x89"
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05q\x97\xf6\x83\x85[:\xe6\x849|4\xce\x95;\x9f\xcb\x9eaaKc\x07\xd0\x02q\xcctZ\x94uH' from client number 941770
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02\xa3\xf4\xb110\xfbUc\\\x10\x8a\x1b\xc8\xb5dy\xc7\x00\xd0\xf0\x96t<\xde\\\xd0\x1d\xd6c\xb7H1' from client number 940055
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03,\xa5\xd14\xa4\xc1\xafh\xde\xd6\x96\x9b\x9f\xb0ZV\xf8V\xe8\xa5\xcc\xba&\x9d\x86\x86N\xca\xdcb\xa8\x91' from client number 940055
+Correct secret has been found. EncID will now be made with client number 940055
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 3a48cc3c7416e75c811536da7109e0d4a0a2a48caa4196d3474c9774f3fb980a
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 940055 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 3a48cc3c7416e75c811536da7109e0d4a0a2a48caa4196d3474c9774f3fb980a deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 7 EncIDs stored
+[>] EncID 3a48cc3c7416e75c811536da7109e0d4a0a2a48caa4196d3474c9774f3fb980a added to Daily Bloom Filter.
+
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\x0f\xa5 \xcb\x14RN4@\x98f\xa4\xbcu\xa6\xeaEQ\x07\x02\xb9^\xdb\x9d\xfc(\xb6X !\xaa\xaf' from client number 940055
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\x80\xf4@\xce\x80h\xb4?\xc2^z$\xebp\x98\xc5z\x07?W\xe3\x90\xc1\xde&~\xe5D\x9f\xf4J\x0f' from client number 940055
+============================================================
+New EphIDInt generated: 51533925697042306225005694908702191955886026350152583571269980957871994774807
+[>] Broadcasting: b'\x01\x03\x01XUb\x80\xe5]\x8b\x94\x9b\xdd\xe1\x95\x80\x9eu\x99\xb4\xf8=\x81\x0ch\xe5\xe8u\xfc\xe4\xaa\xbdI\xf9E'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01V\x98\x18\x92}\xae\xcaS\x9a{\xa3\xdbP3\xa8\x06`\xf6=\xbb\xa6\x99\x99V\x1f\x19\x85A\xf9b\xbb\xf8' from client number 941770
+[>] Broadcasting: b'\x01\x03\x02j\xd0\xbb\xae\xd0K}\x88\xef\xcf\x8e\xc9\xd65\x80\x88\xc9|*\xd5\xdc\xcdS"\xa7\xd0/suQy\xa6'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02\xae\x84v\x19Z\x87)\x00;#\x08x\x98dy\x11\x1e8\xa9X\xfe\xe0\x84\x8a#:\xe3\xbfxn5\x9d' from client number 941770
+[>] Broadcasting: b'\x01\x03\x03Cj\xf2;\x90!}\xd3\x03\x04\xd7+\xac\xbb\xe0F$A\x1cFE\x00\x1f\x98\x0e\xfb\xc1O\xdd\xcb\xa5\xf4'
+[>] Received Chunk 3 out of 3: b'\x01\x03\x030Zh\x96\xa6Z\x9bH\x99\x9f5-\xdc\xafC\xe0;\xcf\xeaB}S\xcf\xb3y&\x96@m\xadr1' from client number 941770
+Correct secret has been found. EncID will now be made with client number 941770
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 3b3a4bc0fb963778f673ccb4a331eb0e73a8ce2b15442058cd55d84161371dc0
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 941770 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 3b3a4bc0fb963778f673ccb4a331eb0e73a8ce2b15442058cd55d84161371dc0 deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 8 EncIDs stored
+[>] EncID 3b3a4bc0fb963778f673ccb4a331eb0e73a8ce2b15442058cd55d84161371dc0 added to Daily Bloom Filter.
+
+[>] Broadcasting: b'\x01\x03\x04x\xca\x18f\xb6Y\x89\xa8+\xf4\xf2\x8f\xef\xd2k\x89=\x8dfB\x9c\xfc\xd5\xce\xe2\x86\xe5\x05yNL:'
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04\x1bV\xcd\x11\xcc\xcfb7U>4\x12\x07\x9f\x15\\\xb7n\x94Q\xbdOS\xd4\xecg\x1f\x01\x11wr\xc3' from client number 941770
+[>] Received Chunk 1 out of 3: b'\x01\x03\x01zF|*;8^_F\x90/\xd6`\xbe\x14\xdb\x03\xf6\xbcT\x1e\x1e\xe1P1`}\xbd\x071\x98\x1c' from client number 940055
+[>] Broadcasting: b'\x01\x03\x05QpQ\xf3\xf63\x89\xf3\xc7?\xabm\x95\\\x0bG\xd0\xb0P\xd1\x051\x99tK\xad\x0b9\xd1\xd4\x90h'
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\x85\x88\xd3\x9e0\x12\xd0\x7f\xf7\x82\tGCT/\xad\x92\x99\xd7K>\xfc\x18\xed\xb6{j\xfe\x04\xb45o' from client number 941770
+[>] Received Chunk 2 out of 3: b'\x01\x03\x02i\x88~\xd2\xa1l\x87\x12\x9d0\xd1\xc6q\xb0.\xeb2\xc1\xf6\xd9\x05x~%\xbeU?\xffpM\xb5Q' from client number 940055
+[>] Received Chunk 3 out of 3: b'\x01\x03\x03\xf8x\x815\xe3\x07=nVL\xb1f{\xd9\xcf\x7f\xae\x1c\x0b\xc9\x01\xe2\xcb}\xd8&\x04\xff\x82:\xe4>' from client number 940055
+Correct secret has been found. EncID will now be made with client number 940055
+===========================Task5===========================
+computing the shared secret EncID by using Diffie Hellman key exchange mechanism.
+$$ EncID Created: 6cad2536ebfcc71af8aacf546062b5dde487cf6efed07091aae701830dca98fc
+
+===========================Task5B===========================
+LocalNode 903535 and remoteNode 940055 have arrived at the same EncID value. 
+===========================Task6===========================
+[>] Encoding to DBF
+[>] EncID 6cad2536ebfcc71af8aacf546062b5dde487cf6efed07091aae701830dca98fc deleted after adding to Bloom Filter.
+
+===========================Task7-A===========================
+[>][2025-04-20 13:01:15] Current DBF has: 9 EncIDs stored
+[>] EncID 6cad2536ebfcc71af8aacf546062b5dde487cf6efed07091aae701830dca98fc added to Daily Bloom Filter.
+
+[>] Received Chunk 1 out of 3: b'\x01\x03\x04.\xf3\x02\xf6\xb9\xa4\x12H\xef\xdf\x0b\x8c`\xfbPv\xd0\xd3w\xa7x\x06w\x10\n)\x88*\x17\xe9d\xea' from client number 940055
+[>] Received Chunk 2 out of 3: b'\x01\x03\x05\xbf\x03\xfd\x11\xfb\xcf\xa84$\xa3k,j\x92\xb1\xe2L\x0e\x8a\xb7|\x9c\xc2HlZ\xb3*\xe5\x9e5\x85' from client number 940055
