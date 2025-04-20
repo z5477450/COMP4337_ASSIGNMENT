@@ -16,31 +16,41 @@ if __name__ == '__main__':
     serverSocket.listen(5)
     print("Waiting for connection ...")
 
+    storedID = None
     while 1:
         connectionSocket, address = serverSocket.accept()
-        data = connectionSocket.recv(1024)
-        
-        print(f"Received data: {data}")
-        
-        tempBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+
+        data = b""
+        while True:
+            chunk = connectionSocket.recv(1024)
+            if not chunk:
+                break
+            data += chunk
+
+
+        tempBF = BloomFilter(size_bits=819200, num_hashes=3)
         print(f"Initialized BloomFilter: {tempBF}")
 
         if tempBF is None or tempBF.backend is None:
             print("Error: tempBF or its backend is None")
 
         parts = data.split(b"|")
+
         tagType = parts[0].decode()
         message = parts[1]
 
 
         receivedBytes = base64.b64decode(message)
-        receivedCBF = bitarray()
-        receivedCBF.frombytes(receivedBytes)
 
-        print(f"Received bitarray: {receivedCBF}")
+        receivedBloomFilter = bitarray()
+        receivedBloomFilter.frombytes(receivedBytes)
+    
+
+        print(f"Received bitarray: {receivedBloomFilter}")
         print(f"Backend before assignment: {tempBF.backend}")
 
-        tempBF.backend.array_ = receivedCBF
+        tempBF.backend.array_ = receivedBloomFilter
+
 
         if tagType == "CBF":
             print(f"CBF received: {tempBF}")

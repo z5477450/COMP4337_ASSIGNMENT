@@ -26,16 +26,17 @@ SERVER_HOST = '127.0.0.1'
 SERVER_PORT = 50000
 
 generateQBFs = True
-
+recentENCId = None
 myChunks = []
-DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
-QBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
-CBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+DBF = BloomFilter(size_bits=819200, num_hashes=3)
+QBF = BloomFilter(size_bits=819200, num_hashes=3)
+CBF = BloomFilter(size_bits=819200, num_hashes=3)
+programStartTime = datetime.datetime.now()
 # A Dict which stores the current (max 6) bloom filters and their corresponding make times.
 # Key: time of DBF creation
 # Value: the DBF 
 currDBFs = {}
-programStartTime = datetime.datetime.now()
+currDBFs[programStartTime] = DBF
 # A list which includes all encIDs in the DBF.
 DBFlist = []
 DBFTimeStamp = []
@@ -48,26 +49,6 @@ covid = False
 def reconstructedSecret(shares):
     secret = recover_secret(shares)
     return int.from_bytes(secret, byteorder='big')
-
-def updateAllDBFS(t):
-    global DBF, DBFlist, DBFTimeStamp, allDBFs
-
-    current_time = datetime.datetime.now()
-    # time duration for QBF
-    delete_duration = t * 6 * 6
-        
-    if currDBFs == {}:
-        currDBFs[programStartTime] = DBF
-
-    DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
-    currDBFs[current_time] = DBF
-
-    count = 0
-    copyDBFs = currDBFs.copy()
-    for t in copyDBFs:
-        count += 1
-        if (current_time - t).total_seconds() >= delete_duration: 
-            currDBFs[t].popitem()
 
 
 
@@ -192,7 +173,6 @@ def generateEphemeral(t, k, n):
 Task 5
 """
 def generateEncid(privateKey, nodeEphID):
-    global encid
     try:
         # Calculate the node pk with ephIDBytes
         nodePublicKey = X25519PublicKey.from_public_bytes(nodeEphID)
@@ -232,26 +212,33 @@ task 6
 # Add the encoded EncID to the Daily Bloom Filter
 def encodingAndDeletingEncID(encid):
     print("===========================Task6===========================")
-    global DBF,encid_hex
-    # DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+    global DBF
     encid_hex = encid.hex()
-    encidList.append(encid_hex)
-    encid_hex_list = encidList.copy()
+
+    print("[>] Encoding to DBF")
+    print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
+    addEncIDToDBF(encid_hex)
+    print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
+
+
+    # encid_hex = encid.hex()
+    # encidList.append(encid_hex)
+    # encid_hex_list = encidList.copy()
 
     
-    for encid_hex in encid_hex_list:
-        DBF.add(encid_hex)
-        print("[>] Encoding to DBF")
-        encidList.remove(encid_hex)
-        print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
-        addEncIDToDBF(encid_hex)
-        print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
+    # for encid_hex in encid_hex_list:
+    #     DBF.add(encid_hex)
+    #     print("[>] Encoding to DBF")
+    #     encidList.remove(encid_hex)
+    #     print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
+    #     addEncIDToDBF(encid_hex)
+    #     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
 
 
     #print(DBF)
     #rint(f"[>] EncID {encid_hex} added to Daily Bloom Filter.\n")
     # Delete the encid after added to the Bloom Filter
-    encid_hex_list.remove(encid_hex)
+    # encid_hex_list.remove(encid_hex)
     #print(f"[>] EncID {encid_hex} deleted after adding to Bloom Filter.\n")
 
 
@@ -260,7 +247,7 @@ def encodingAndDeletingEncID(encid):
 task 7
 """
 def addEncIDToDBF(encid_hex):
-    global DBFlist, DBFTimeStamp
+    global DBFlist, DBFTimeStamp, recentENCId
     
     current_time = datetime.datetime.now()
     
@@ -273,18 +260,21 @@ def addEncIDToDBF(encid_hex):
     
     print("===========================Task7-A===========================")
     print(f"[>][{DBFTimeStamp[0].strftime('%Y-%m-%d %H:%M:%S')}] Current DBF has: {len(DBFlist)} EncIDs stored")
-    for encid_hex in encidList:
-        if encid_hex not in DBF:
-            DBF.add(encid_hex)
-        if encid_hex in DBF:
-            print("\n[>] EncIDs in current DBF:")
-            for i in range(len(DBFlist)):
-                print(f"    {i+1}. {DBFlist[i]}")
-            # while len(encidList):
-            #     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.")
-                break
-    #display all encid in DBF
+    
+    DBF.add(encid_hex)
+    recentENCId = encid_hex
 
+    # for encid_hex in encidList:
+    #     if encid_hex not in DBF:
+    #         DBF.add(encid_hex)
+    #     if encid_hex in DBF:
+    #         print("\n[>] EncIDs in current DBF:")
+    #         for i in range(len(DBFlist)):
+    #             print(f"    {i+1}. {DBFlist[i]}")
+    #         # while len(encidList):
+    #         #     print(f"[>] EncID {encid_hex} added to Daily Bloom Filter.")
+    #             break
+    #display all encid in DBF
 
 
 
@@ -300,21 +290,15 @@ def DBF_manager(t):
         
         current_time = datetime.datetime.now()
         
-        
-        # CHANGED FROM HERE
-        if currDBFs == {}:
-            currDBFs[programStartTime] = DBF
 
-        DBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
+        DBF = BloomFilter(size_bits=819200, num_hashes=3)
         currDBFs[current_time] = DBF
 
-        count = 0
+
         copyDBFs = currDBFs.copy()
         for ct in copyDBFs:
-            count += 1
-            if (current_time - ct).total_seconds() >= 1: 
+            if (current_time - ct).total_seconds() >= delete_duration: 
                 currDBFs.pop(ct)
-
 
         # Showing DBF infos
         print("====================Task 7-B====================")
@@ -325,29 +309,6 @@ def DBF_manager(t):
 
         print("\n")
 
-# for i, (timestamp, encids) in enumerate(allDBFs):
-        #     age_seconds = (current_time - timestamp).total_seconds()
-        #     print(f"\n    DBF {i+1}: Created at {timestamp.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds:.1f} seconds ago)")
-        #     print(f"    Contains {len(encids)} EncIDs:")
-            
-
-        #     for j, encid in enumerate(encids):
-        #         print(f"        {j+1}. {encid}")
-
-
-# if DBFlist and DBFTimeStamp:
-        #     allDBFs.append((DBFTimeStamp[0], DBFlist.copy()))
-# DBFlist = []
-# DBFTimeStamp = [current_time]
-
-
-# delete old DBF
-# allDBFs = [(ts, encids) for ts, encids in allDBFs 
-#            if (current_time - ts).total_seconds() <= delete_duration]
-# # only keep avaliable DBF
-# if len(allDBFs) > 6:
-#     allDBFs.pop(0)
-
 
 
 """
@@ -355,12 +316,11 @@ task 8
 """
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
-    QBF = BloomFilter(size_bits=100000*8, num_hashes=3, error_rate=0.1)
-    Dt = t * 6 * 6
+    QBF = BloomFilter(size_bits=819200, num_hashes=3)
+    Dt = t * 2
 
     while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
-
         # Meaning node has covid and no longer generates QBFs.
         if covid:
             print("[>>] Covid detected. Terminating QBF generation.")
@@ -371,17 +331,15 @@ def combineDBFtoQBF(t):
 
         current_time = datetime.datetime.now()
         print(f"[>] Combining DBFs into QBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
-
+        
         for dbf in currDBFs.values():
             QBF.union(dbf)
 
         sendQBFToBackend(QBF)
 
-        # print("[>] Current QBF contains the following EncIDs:")
-        # for i, encid in enumerate(QBF):
-        #     print(f"    {i + 1}. {encid}")
 
 def sendQBFToBackend(QBF):
+    global recentENCId
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
 
@@ -391,6 +349,8 @@ def sendQBFToBackend(QBF):
     messageInBytes = message.tobytes()
     messageInB64 = base64.b64encode(messageInBytes)
     print(f"BLOOM FILTER ON NODE SIDE")
+    bits = QBF.backend.array_
+    print("Set bit indices:", [i for i, bit in enumerate(bits) if bit])
     print(QBF)
     clientSocket.send(bloomType + messageInB64)
 
@@ -406,8 +366,12 @@ def combineDBFtoCBF():
     current_time = datetime.datetime.now()
     print(f"[>] Combining DBFs into CBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
-    updateAllDBFS(int(sys.argv[1]))
-
+    # Verifies if the last key, value pair in the dictionary is the same, if not the same as the current DBF being edited,
+    # then needs to be added into the dictionary to be sent to the backend.
+    lkey = list(currDBFs.keys())[-1]
+    if len(currDBFs) < 6 and lkey.backend.array_ != DBF.backend.array_:
+        current_time = datetime.datetime.now()
+        currDBFs[current_time] = DBF
 
     # Combine all DBFs into a single CBF.
     for dbf in currDBFs.values():
@@ -420,7 +384,7 @@ def combineDBFtoCBF():
     tcp_sendCBF.start()
 
 def sendCBF(CBF):
-    global localNodeID, generateQBFs
+    global localNodeID, generateQBFs, currDBFs
 
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51000))
@@ -433,6 +397,8 @@ def sendCBF(CBF):
     print(f"BLOOM FILTER ON NODE SIDE")
     print(CBF)
     clientSocket.send(bloomType + messageInB64)
+
+    currDBFs.popitem()
 
     print(clientSocket.recv(30).decode('utf-8'))
     print(f"Node #{localNodeID} will now terminate QBF generation.")
@@ -452,8 +418,6 @@ def main():
     t = int(sys.argv[1])
     k = int(sys.argv[2])
     n = int(sys.argv[3])
-    
-
 
     if t not in tSet:
         print(f"t value must be an element of the set {tSet}")
