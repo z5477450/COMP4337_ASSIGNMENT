@@ -83,8 +83,8 @@ def listenShares(k):
             continue
         
         sendProbability = random.random()
-        # if sendProbability < 0.5:
-        #     continue
+        if sendProbability < 0.5:
+            continue
         
         if senderID not in collectedChunks:
             collectedChunks[senderID] = []
@@ -284,7 +284,7 @@ task 8
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
     QBF = BloomFilter(size_bits=819200, num_hashes=3)
-    Dt = t * 2
+    Dt = t * 6 * 6
 
     while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
