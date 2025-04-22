@@ -83,8 +83,8 @@ def listenShares(k):
             continue
         
         sendProbability = random.random()
-        if sendProbability < 0.5:
-            continue
+        # if sendProbability < 0.5:
+        #     continue
         
         if senderID not in collectedChunks:
             collectedChunks[senderID] = []
@@ -299,7 +299,8 @@ def combineDBFtoQBF(t):
         current_time = datetime.datetime.now()
         print(f"[>] Combining DBFs into QBF at {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
         
-        for dbf in currDBFs.values():
+        copyDbfs = currDBFs.copy()
+        for dbf in copyDbfs.values():
             QBF.union(dbf)
 
         sendQBFToBackend(QBF)
@@ -321,6 +322,7 @@ def sendQBFToBackend(QBF):
         # read and print the server’s reply
         response = clientSocket.recv(30).decode('utf-8')
         print(f"[Client] QBF match result: {response}")
+        print("!" * 100)
     finally:
         clientSocket.close()
 
