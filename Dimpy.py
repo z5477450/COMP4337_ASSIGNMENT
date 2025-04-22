@@ -84,8 +84,8 @@ def listenShares(k):
             continue
         
         sendProbability = random.random()
-        # if sendProbability < 0.5:
-        #     continue
+        if sendProbability < 0.5:
+            continue
         
         if senderID not in collectedChunks:
             collectedChunks[senderID] = []
@@ -106,6 +106,7 @@ def listenShares(k):
         shares = [Share.from_bytes(share) for share in collectedChunks[senderID]]
 
         if len(collectedChunks[senderID]) == chunksNeeded:
+            print(f"{chunksNeeded} out of {chunksNeeded} received. Now reconstructing EphID.")
             try:
                 shares = [Share.from_bytes(share) for share in collectedChunks[senderID]]
                 secretRecv = reconstructedSecret(shares)
@@ -162,6 +163,10 @@ def generateEphemeral(t, k, n):
         print(f"New EphIDInt generated: {ephIDInt}")
 
         chunks = split_secret(ephIDBytes, k, n)
+        print(f"{n} chunks creted.")
+        for i in range (0, n):
+            print(f"Chunk #{i}: {chunks[i]}")
+
         myChunks = [bytes(chunk) for chunk in chunks]
 
         broadcastShares(myChunks, ephIDhash, k)
@@ -235,7 +240,7 @@ def addEncIDToDBF(encid_hex):
     if not DBFTimeStamp:
         DBFTimeStamp.append(current_time)
         DBFlist = []
-       
+    
     DBFlist.append(encid_hex)
     
     print("===========================Task7-A===========================")
@@ -266,7 +271,7 @@ def DBF_manager(t):
 
         # Showing DBF infos
         print("====================Task 7-B====================")
-        print("\n[>] All stored DBFs and their EncIDs:")
+        print("\n[>] All stored DBFs.")
         for tm, dbf in currDBFs.items():
             age_seconds = (current_time - tm).total_seconds()
             print(f"\n    DBF {dbf}: Created at {tm.strftime('%Y-%m-%d %H:%M:%S')} ({age_seconds} seconds ago)")
@@ -280,7 +285,7 @@ task 8
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
     QBF = BloomFilter(size_bits=819200, num_hashes=3)
-    Dt = t * 2
+    Dt = t * 6 * 6
 
     while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
@@ -306,19 +311,6 @@ def sendQBFToBackend(QBF):
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect(('localhost', 51001))
 
-    # bloomType = "QBF".encode() + b"|"
-
-    # message = QBF.backend.array_
-    # messageInBytes = message.tobytes()
-    # messageInB64 = base64.b64encode(messageInBytes)
-    # print(f"BLOOM FILTER ON NODE SIDE")
-    # bits = QBF.backend.array_
-    # print("Set bit indices:", [i for i, bit in enumerate(bits) if bit])
-    # print(QBF)
-    # clientSocket.send(bloomType + messageInB64)
-    # print("[Client] awaiting server response…")   
-    # resp = clientSocket.recv(1024).decode('utf-8')
-    # print(f"[Client] QBF match result: {resp}")
     message = ("QBF", QBF)
     serialized = pickle.dumps(message)
 
@@ -379,15 +371,6 @@ def sendCBF(CBF, added):
         currDBFs.popitem()
 
 
-
-# bloomType = "CBF".encode() + b"|"
-
-    # message = CBF.backend.array_
-    # messageInBytes = message.tobytes()
-    # messageInB64 = base64.b64encode(messageInBytes)
-    # print(f"BLOOM FILTER ON NODE SIDE")
-    # print(CBF)
-    # clientSocket.send(bloomType + messageInB64)
 
 def main():
     global localNodeID, ephIDprivKey, ephIDBytes, t, k, n, covid
