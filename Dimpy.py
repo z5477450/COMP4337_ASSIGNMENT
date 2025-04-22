@@ -51,7 +51,6 @@ def reconstructedSecret(shares):
 
 
 
-
 def listenShares(k):
     global myChunks
 
@@ -84,8 +83,8 @@ def listenShares(k):
             continue
         
         sendProbability = random.random()
-        if sendProbability < 0.5:
-            continue
+        # if sendProbability < 0.5:
+        #     continue
         
         if senderID not in collectedChunks:
             collectedChunks[senderID] = []
@@ -285,7 +284,7 @@ task 8
 def combineDBFtoQBF(t):
     global allDBFs, currDBFs, generateQBFs
     QBF = BloomFilter(size_bits=819200, num_hashes=3)
-    Dt = t * 6 * 6
+    Dt = t * 2
 
     while generateQBFs:
         time.sleep(Dt)  # Sleep for Dt minutes (converted to seconds)
@@ -308,19 +307,22 @@ def combineDBFtoQBF(t):
 
 def sendQBFToBackend(QBF):
     global recentENCId
-    clientSocket = socket(AF_INET, SOCK_STREAM)
-    clientSocket.connect(('localhost', 51001))
+    try:
+        clientSocket = socket(AF_INET, SOCK_STREAM)
+        clientSocket.connect(('localhost', 51001))
 
-    message = ("QBF", QBF)
-    serialized = pickle.dumps(message)
+        message = ("QBF", QBF)
+        serialized = pickle.dumps(message)
 
-    clientSocket.sendall(serialized)
-    # tell the server we're done writing
-    clientSocket.shutdown(SHUT_WR)
+        clientSocket.sendall(serialized)
+        # tell the server we're done writing
+        clientSocket.shutdown(SHUT_WR)
 
-    # read and print the server’s reply
-    response = clientSocket.recv(30).decode('utf-8')
-    print(f"[Client] QBF match result: {response}")
+        # read and print the server’s reply
+        response = clientSocket.recv(30).decode('utf-8')
+        print(f"[Client] QBF match result: {response}")
+    finally:
+        clientSocket.close()
 
 
 """
@@ -355,20 +357,22 @@ def combineDBFtoCBF():
 
 def sendCBF(CBF, added):
     global localNodeID, generateQBFs, currDBFs
+    try:
+        clientSocket = socket(AF_INET, SOCK_STREAM)
+        clientSocket.connect(('localhost', 51001))
 
-    clientSocket = socket(AF_INET, SOCK_STREAM)
-    clientSocket.connect(('localhost', 51001))
-
-    message = ("CBF", CBF)
-    serialize = pickle.dumps(message)
-    clientSocket.send(serialize)
-    clientSocket.shutdown(SHUT_WR)
-    
-    print(clientSocket.recv(30).decode('utf-8'))
-    print(f"Node #{localNodeID} will now terminate QBF generation.")
-    generateQBFs = False
-    if added: 
-        currDBFs.popitem()
+        message = ("CBF", CBF)
+        serialize = pickle.dumps(message)
+        clientSocket.send(serialize)
+        clientSocket.shutdown(SHUT_WR)
+        
+        print(clientSocket.recv(30).decode('utf-8'))
+        print(f"Node #{localNodeID} will now terminate QBF generation.")
+        generateQBFs = False
+        if added: 
+            currDBFs.popitem()
+    finally:
+        clientSocket.close()
 
 
 
